@@ -1,0 +1,30 @@
+<nav class="navbar navbar-success bg-success justify-content-between" >
+    <h4 style="text-align:center;color:white">Loan Charges</h4>
+   <form class="form-inline">
+     <button type="button" class=" btn btn-outline-danger btn-sm" [mat-dialog-close] ><STrong>X</STrong></button>
+   </form>
+ </nav>
+ <br>
+ <div  class="table-responsive">
+ <table  class="table table-bordered hover"  >
+ <thead class="thead-light">
+ <th>LoanTypeChargesId</th>
+ <th>Is Percentage</th>
+ <th>Is Tariff</th>
+ <th> Value</th>
+ <th> Amount</th>
+ </thead>
+ <tbody>
+ <tr *ngFor="let items of LoanChargesList">
+ <td >{{getLoanTypeName(items.LoanChargesListId)}}</td>
+ <td >{{items.IsPercent}}</td>
+ <td >{{items.IsTariff}}</td>
+ <td >{{items.Value}}</td>
+ <td >{{items.Amount}}</td>
+ 
+ </tr>
+ </tbody>
+ </table>
+ 
+ </div>
+ 

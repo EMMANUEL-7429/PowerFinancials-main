@@ -1,0 +1,180 @@
+<h3>Transaction Charges</h3>
+
+<form
+  #form="ngForm"
+  autocomplete="off"
+  (submit)="onSubmit(form)"
+  style="margin-left: 10px; margin-right: 10px"
+>
+  <input
+    type="hidden"
+    class="form-control"
+    name="ChargesName"
+    #ChargesName="ngModel"
+    [(ngModel)]="formCharge.ChargesName"
+  />
+  <input
+    type="hidden"
+    class="form-control"
+    name="TransactionChargesId"
+    #TransactionChargesId="ngModel"
+    [(ngModel)]="formCharge.TransactionChargesId"
+  />
+  <input
+    type="hidden"
+    class="form-control"
+    name="AccountTransactionId"
+    #AccountTransactionId="ngModel"
+    [(ngModel)]="formCharge.AccountTransactionId"
+  />
+  <input
+    type="hidden"
+    class="form-control"
+    name="TariffId"
+    #TariffId="ngModel"
+    [(ngModel)]="formCharge.TariffId"
+  />
+
+  <div class="row">
+    <div class="col-sm-12">
+      <label>Charge Name</label>
+      <select
+        style="background-color: white"
+        class="form-control"
+        name="ChargesId"
+        #ChargesId="ngModel"
+        [(ngModel)]="formCharge.ChargesId"
+        (change)="updateCharges($event.target)"
+        [class.is-invalid]="!isValid && formCharge.ChargesId == 0"
+      >
+        <option value="0">-select</option>
+        <option *ngFor="let items of ChargesList" value="{{ items.ChargesId }}">
+          {{ items.Description }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <br />
+
+  <div class="row" *ngIf="showCharges">
+    <div class="col-sm-3">
+      <label>Is Percent</label>
+      <input
+        type="checkbox"
+        style="width: 30px; height: 30px"
+        class="form-control"
+        name="IsPercent"
+        #IsPercent="ngModel"
+        [(ngModel)]="formCharge.IsPercent"
+      />
+    </div>
+
+    <div class="col-sm-9">
+      <div *ngIf="formCharge.IsPercent">
+        <label>Percentage(%)</label>
+        <input
+          class="form-control"
+          name="Amount"
+          (keyup)="updateTotal()"
+          #Amount="ngModel"
+          [(ngModel)]="formCharge.Amount"
+        />
+      </div>
+      <div *ngIf="!formCharge.IsPercent">
+        <label>Amount</label>
+        <input
+          class="form-control"
+          name="Amount"
+          (keyup)="updateTotal()"
+          #Amount="ngModel"
+          [(ngModel)]="formCharge.Amount"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row" hidden>
+    <div class="col-sm-12">
+      <label>Is Tariff</label>
+      <input
+        type="checkbox"
+        style="width: 30px; height: 30px"
+        class="form-control"
+        name="Tariff"
+        #Tariff="ngModel"
+        [(ngModel)]="formCharge.Tariff"
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <label>Total Charges</label>
+      <input
+        readonly
+        class="form-control"
+        name="Total"
+        #Total="ngModel"
+        [(ngModel)]="formCharge.Total"
+        [class.is-invalid]="!isValid && formCharge.Total == 0"
+      />
+    </div>
+  </div>
+  <br />
+  <div class="row" hidden>
+    <div class="col-sm-3">
+      <input
+        type="date"
+        class="form-control"
+        style="background-color: white"
+        name="CreatedOn"
+        #CreatedOn="ngModel"
+        [(ngModel)]="formCharge.CreatedOn"
+      />
+    </div>
+    <div class="col-sm-3">
+      <input
+        type="text"
+        class="form-control"
+        style="background-color: white"
+        name="CreatedBy"
+        #CreatedBy="ngModel"
+        [(ngModel)]="formCharge.CreatedBy"
+      />
+    </div>
+    <div class="col-sm-3">
+      <input
+        type="date"
+        class="form-control"
+        style="background-color: white"
+        name="ModifiedOn"
+        #ModifiedOn="ngModel"
+        [(ngModel)]="formCharge.ModifiedOn"
+      />
+    </div>
+    <div class="col-sm-3">
+      <input
+        type="text"
+        class="form-control"
+        style="background-color: white"
+        name="ModifiedBy"
+        #ModifiedBy="ngModel"
+        [(ngModel)]="formCharge.ModifiedBy"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <button type="submit" class="btn btn-info">
+        <i class="fa fa-database"></i> Add Charge
+        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button
+      >&nbsp;
+      <button
+        type="button"
+        class="btn btn-outline-danger ml-1"
+        [mat-dialog-close]
+      >
+        <STrong>X</STrong> Close
+      </button>
+    </div>
+  </div>
+</form>

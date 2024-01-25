@@ -1,0 +1,25 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { AddSecurityQuestionComponent } from './add-security-question.component';
+
+describe('AddSecurityQuestionComponent', () => {
+  let component: AddSecurityQuestionComponent;
+  let fixture: ComponentFixture<AddSecurityQuestionComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ AddSecurityQuestionComponent ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AddSecurityQuestionComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

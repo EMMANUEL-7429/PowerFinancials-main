@@ -1,0 +1,899 @@
+<div class="container-fluid">
+  <!-- start page title -->
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div
+        class="page-title-box d-sm-flex align-items-center justify-content-between"
+      >
+        <h4 class="mb-sm-0 font-size-18">Loan Application</h4>
+
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">Loans</li>
+            <li class="breadcrumb-item active">
+              <a href="javascript: void(0);" routerLink="/loan-application-list"
+                >View list</a
+              >
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+  <div style="background-color: white; padding: 20px">
+    <div style="background-color: white; padding: 1%; padding-bottom: 4%">
+      <div
+        *ngIf="isDisconnected == true"
+        class="alert alert-light"
+        style="height: 1%"
+      >
+        <!--connection status starts here-->
+        <label text-wrap
+          ><i class="fa fa-wifi" aria-hidden="true"></i>Please check your
+          connection and try again
+          <button class="btn btn-primary" (click)="Reload()">
+            <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Refresh
+          </button></label
+        >
+      </div>
+      <div *ngIf="isValid == false">
+        <a class="btn btn-danger" style="color: white">
+          Please fill required Field
+        </a>
+      </div>
+      <div class="row" style="margin: 3px">
+        <div class="col-sm-10">
+          <mat-card>
+            <form
+              #form="ngForm"
+              *ngIf="loanservice.LoanApplicationForm"
+              (submit)="onSubmit(form)"
+              autocomplete="off"
+            >
+              <input
+                class="form-control"
+                hidden
+                name="UsedShares"
+                #UsedShares="ngModel"
+                [(ngModel)]="loanservice.LoanApplicationForm.UsedShares"
+                readonly
+              />
+              <input
+                hidden
+                class="form-control"
+                name="LoanId"
+                #LoanId="ngModel"
+                [(ngModel)]="loanservice.LoanApplicationForm.LoanId"
+                readonly
+              />
+              <mat-tab-group
+                mat-align-tabs="start"
+                [selectedIndex]="selectedIndex"
+              >
+                <mat-tab label="Member Details">
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <label>Member No.</label>
+                      <select
+                        placeholder="search"
+                        class="form-select"
+                        name="MemberId"
+                        #MemberId="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.MemberId"
+                        (change)="updateMemberdatails($event.target)"
+                        [class.is-invalid]="
+                          !isValid &&
+                          loanservice.LoanApplicationForm.MemberId == 0
+                        "
+                      >
+                        <option value="0">select</option>
+                        <option
+                          *ngFor="let items of MemberList"
+                          value="{{ items.MemberId }}"
+                        >
+                          {{ items.MemberNo }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-sm-4">
+                      <label>Full Name</label>
+                      <input
+                        class="form-control"
+                        name="FullName"
+                        #FullName="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.FullName"
+                        readonly
+                      />
+                    </div>
+                    <div class="col-sm-4">
+                      <label>Id No</label>
+                      <div class="input-group">
+                        <input
+                          class="form-control"
+                          name="IdNo"
+                          #IdNo="ngModel"
+                          [(ngModel)]="loanservice.LoanApplicationForm.IdNo"
+                          readonly
+                        />
+                        &nbsp;
+                        <div class="input-group-append">
+                          <button
+                            type="button"
+                            class="btn btn-danger"
+                            (click)="openForSeachMember(null)"
+                          >
+                            <i class="fa fa-search"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin: 3px">
+                    <div class="col-sm-4">
+                      <label>Gross Pay</label>
+                      <input
+                        class="form-control"
+                        name="GrossPay"
+                        #GrossPay="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.GrossPay"
+                        readonly
+                      />
+                    </div>
+                    <div class="col-sm-4">
+                      <label>NetPay</label>
+                      <input
+                        class="form-control"
+                        name="NetPay"
+                        #NetPay="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.NetPay"
+                        readonly
+                      />
+                    </div>
+                    <div class="col-sm-4">
+                      <label>Loan Series</label>
+                      <input
+                        class="form-control"
+                        name="LoanSeries"
+                        #LoanSeries="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.LoanSeries"
+                        readonly
+                      />
+                    </div>
+                    <div class="col-sm-4">
+                      <label>Total Shares</label>
+                      <input
+                        class="form-control"
+                        name="TotalShares"
+                        #TotalShares="ngModel"
+                        [(ngModel)]="
+                          loanservice.LoanApplicationForm.TotalShares
+                        "
+                        readonly
+                      />
+                    </div>
+                  </div>
+                  <div class="row" style="margin: 3px">
+                    <div class="col-sm-4">
+                      <label>Manual Ref</label>
+                      <input
+                        class="form-control"
+                        name="ManualRef"
+                        #ManualRef="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.ManualRef"
+                      />
+                    </div>
+                    <div class="col-sm-4">
+                      <label>Free Shares</label>
+                      <input
+                        class="form-control"
+                        name="FreeShares"
+                        #FreeShares="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.FreeShares"
+                        value="{{
+                          loanservice.LoanApplicationForm.TotalShares -
+                            loanservice.LoanApplicationForm.UsedShares
+                        }}"
+                        readonly
+                      />
+                    </div>
+                    <div class="col-sm-4">
+                      <label>Loan Code</label>
+                      <input
+                        class="form-control"
+                        name="Code"
+                        #Code="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.Code"
+                        readonly
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="btn-group"
+                    role="group"
+                    aria-label="Basic example"
+                    style="margin: 2%"
+                  >
+                    <button
+                      type="button"
+                      (click)="selectTab(1)"
+                      class="btn btn-info"
+                    >
+                      <i class="fas fa-arrow-circle-right"></i>Next
+                    </button>
+                  </div>
+                </mat-tab>
+                <mat-tab label="Loan Details">
+                  <div class="row" style="margin: 3px">
+                    <div class="col-sm-3">
+                      <label>Loan Type</label>
+                      <select
+                        class="form-select"
+                        name="LoanTypeId"
+                        #LoanTypeId="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.LoanTypeId"
+                        (change)="updateLoanTypesdatails($event.target)"
+                        [class.is-invalid]="
+                          !isValid &&
+                          loanservice.LoanApplicationForm.LoanTypeId == 0
+                        "
+                      >
+                        <option value="0">Select</option>
+                        <option
+                          *ngFor="let items of LoanTypeList"
+                          value="{{ items.LoanTypeId }}"
+                        >
+                          {{ items.Description }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-sm-3">
+                      <label>Loan Amount</label>
+                      <input
+                        class="form-control"
+                        name="LoanAmount"
+                        #LoanAmount="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.LoanAmount"
+                        [class.is-invalid]="
+                          !isValid &&
+                          loanservice.LoanApplicationForm.LoanAmount == 0
+                        "
+                        (keypress)="onlyNumbersAllowed($event)"
+                      />
+                    </div>
+                    <div class="col-sm-3">
+                      <label>Application Date</label>
+                      <input
+                        type="date"
+                        class="form-control"
+                        name="ApplicationDate"
+                        #ApplicationDate="ngModel"
+                        [(ngModel)]="
+                          loanservice.LoanApplicationForm.ApplicationDate
+                        "
+                      />
+                    </div>
+                    <div class="col-sm-3">
+                      <label>Interest Type</label>
+                      <select
+                        class="form-select"
+                        name="InterestType"
+                        #InterestType="ngModel"
+                        [(ngModel)]="
+                          this.loanservice.LoanApplicationForm.InterestType
+                        "
+                      >
+                        <option value="0">select</option>
+                        <option value="1">Reducing Balance</option>
+                        <option value="2">Reducing Balance Const</option>
+                        <option value="3">Fixed</option>
+                        <option value="4">Amortised</option>
+                        <option value="5">Markup</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row" style="margin: 3px">
+                    <div class="col-sm-3">
+                      <label>Period Frequency</label>
+
+                        <select
+                        class="form-select"       
+                        name="PeriodFrequency"
+                        #PeriodFrequency="ngModel"                 
+                        [(ngModel)]="loanservice.LoanApplicationForm.PeriodFrequency"
+                        [class.is-invalid]="!isValid && loanservice.LoanApplicationForm.PeriodFrequency == 0"
+                      >
+                        <option value="0">--select--</option>
+                        <option value="1">Daily</option>
+                        <option value="2">Weekly</option>
+                        <option value="3">Monthly</option>
+                        <option value="4">Annually</option>
+                        <option value="5">30 Days Cycle</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-3">
+                      <label> Repay Period</label>
+                      <input
+                        class="form-control"
+                        name="RepayPeriod"
+                        #RepayPeriod="ngModel"
+                        [(ngModel)]="
+                          loanservice.LoanApplicationForm.RepayPeriod
+                        "
+                        [class.is-invalid]="
+                          !isValid &&
+                          loanservice.LoanApplicationForm.RepayPeriod == 0
+                        "
+                      />
+                    </div>
+                    <div
+                      class="col-sm-3"
+                      *ngIf="
+                        loanservice.LoanApplicationForm.IsMarkUpBased == false
+                      "
+                    >
+                      <label>Interest Rate</label>
+                      <input
+                        class="form-control"
+                        name="InterestRate"
+                        #InterestRate="ngModel"
+                        [(ngModel)]="
+                          loanservice.LoanApplicationForm.InterestRate
+                        "
+                      />
+                    </div>
+                    <div class="col-sm-3" style="margin-top: 3%">
+                      <input
+                        type="checkbox"
+                        disabled
+                        name="IsMarkUpBased"
+                        #IsMarkUpBased="ngModel"
+                        [(ngModel)]="
+                          loanservice.LoanApplicationForm.IsMarkUpBased
+                        "
+                        style="width: 35px; height: 35px"
+                      />
+                      &nbsp;<label>Is MarkUp Based</label>
+                    </div>
+                  </div>
+                  <div class="row" style="margin: 3px">
+                    <div
+                      class="col-sm-3"
+                      *ngIf="loanservice.LoanApplicationForm.IsMarkUpBased"
+                    >
+                      <label>Markup Amount</label>
+                      <input
+                        class="form-control"
+                        name="MarkupAmount"
+                        #MarkupAmount="ngModel"
+                        [(ngModel)]="
+                          loanservice.LoanApplicationForm.MarkupAmount
+                        "
+                      />
+                    </div>
+                    <div class="col-sm-3">
+                      <label>loan effect date</label>
+                      <input
+                        type="date"
+                        class="form-control"
+                        name="loaneffectdate"
+                        #loaneffectdate="ngModel"
+                        [(ngModel)]="
+                          loanservice.LoanApplicationForm.loaneffectdate
+                        "
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="btn-group"
+                    role="group"
+                    aria-label="Basic example"
+                    style="margin: 2%"
+                  >
+                    <button
+                      type="button"
+                      (click)="selectTab(0)"
+                      class="btn btn-info"
+                    >
+                      <i class="fas fa-arrow-circle-left"></i>previous</button
+                    >&nbsp;&nbsp;
+                    <button
+                      type="button"
+                      (click)="selectTab(2)"
+                      class="btn btn-info"
+                    >
+                      <i class="fas fa-arrow-circle-right"></i>Next
+                    </button>
+                  </div>
+                </mat-tab>
+                <mat-tab label="Others Details">
+                  <div class="row" style="margin: 3px">
+                    <div class="col-sm-4">
+                      <label>Status </label>
+                      <select
+                        disabled
+                        class="form-control"
+                        name="Status"
+                        #Status="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.Status"
+                      >
+                        <option
+                          *ngFor="let items of LoanStatusDefaultList"
+                          value="0"
+                        >
+                          {{ items.LoanStatusName }}
+                        </option>
+                        <option
+                          *ngFor="let items of LoanStatusList"
+                          value="{{ items.LoanStatusId }}"
+                        >
+                          {{ items.LoanStatusName }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-sm-4">
+                      <label>Status Date</label>
+                      <input
+                        type="date"
+                        class="form-control"
+                        name="StatusDate"
+                        #StatusDate="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.StatusDate"
+                      />
+                    </div>
+                    <div class="col-sm-4">
+                      <label> Loan Purpose</label>
+                      <select
+                        class="form-select"
+                        name="PurposeId"
+                        #PurposeId="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.PurposeId"
+                      >
+                        <option value="0">select</option>
+                        <option
+                          *ngFor="let items of LoanPurposeList"
+                          value="{{ items.LoanPurposeId }}"
+                        >
+                          {{ items.Name }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="row" style="margin: 3px">
+                    <div class="col-sm-4">
+                      <label>Credit Officer Id No </label>
+                      <select
+                        class="form-select"
+                        name="CreditOfficerId"
+                        #CreditOfficerId="ngModel"
+                        [(ngModel)]="
+                          loanservice.LoanApplicationForm.CreditOfficerId
+                        "
+                        (change)="updateCreditOffice($event.target)"
+                      >
+                        <option value="0">select</option>
+                        <option
+                          *ngFor="let items of CreditOfficerList"
+                          value="{{ items.CreditOfficerId }}"
+                        >
+                          {{ items.IdNo }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-sm-4">
+                      <label>Credit Officer Name </label>
+                      <input
+                        class="form-control"
+                        name="CreditOfficerName"
+                        #CreditOfficerName="ngModel"
+                        [(ngModel)]="
+                          loanservice.LoanApplicationForm.CreditOfficerName
+                        "
+                      />
+                    </div>
+                    <div class="col-sm-4">
+                      <label>Currency </label>
+                      <select
+                        class="form-select"
+                        name="CurrencyId"
+                        #CurrencyId="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.CurrencyId"
+                      >
+                        <option value="0" selected>Kenyan Shillings</option>
+                        <option
+                          *ngFor="let items of CurrencyList"
+                          value="{{ items.CurrencyId }}"
+                        >
+                          {{ items.CurrencyName }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row" style="margin: 3px">
+                    <div class="col-sm-4">
+                      <label> Donor (Business Partners) </label>
+                      <select
+                        class="form-select"
+                        name="DonorId"
+                        #DonorId="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.DonorId"
+                      >
+                        <option value="0">select</option>
+                        <option
+                          *ngFor="let items of LoanDonorList"
+                          value="{{ items.DonorId }}"
+                        >
+                          {{ items.DonorName }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-sm-4">
+                      <label>Branch</label>
+                      <select
+                        class="form-select"
+                        name="BranchId"
+                        #BranchId="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.BranchId"
+                      >
+                        <option value="0">select</option>
+                        <option
+                          *ngFor="let items of BranchList"
+                          value="{{ items.CompanyBranchesId }}"
+                        >
+                          {{ items.Name }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row" hidden style="margin: 3px">
+                    <div class="col-sm-3" style="margin-top: 3%">
+                      <input
+                        type="checkbox"
+                        name="IsMigrated"
+                        #IsMigrated="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.IsMigrated"
+                        style="width: 35px; height: 35px"
+                      />
+                      &nbsp;<label>Is Migrated</label>
+                    </div>
+                  </div>
+                  <div class="row" hidden style="margin: 3px">
+                    <div class="col-sm-3">
+                      <input
+                        type="date"
+                        class="form-control"
+                        style="background-color: white"
+                        name="CreatedOn"
+                        #CreatedOn="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.CreatedOn"
+                      />
+                    </div>
+                    <div class="col-sm-3">
+                      <input
+                        type="text"
+                        class="form-control"
+                        style="background-color: white"
+                        name="CreatedBy"
+                        #CreatedBy="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.CreatedBy"
+                      />
+                    </div>
+                    <div class="col-sm-3">
+                      <input
+                        type="date"
+                        class="form-control"
+                        style="background-color: white"
+                        name="ModifiedOn"
+                        #ModifiedOn="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.ModifiedOn"
+                      />
+                    </div>
+                    <div class="col-sm-3">
+                      <input
+                        type="text"
+                        class="form-control"
+                        style="background-color: white"
+                        name="ModifiedBy"
+                        #ModifiedBy="ngModel"
+                        [(ngModel)]="loanservice.LoanApplicationForm.ModifiedBy"
+                      />
+                    </div>
+                  </div>
+
+                  <div
+                    class="btn-group"
+                    role="group"
+                    aria-label="Basic example"
+                    style="margin: 2%"
+                  >
+                    <button
+                      type="button"
+                      (click)="selectTab(1)"
+                      class="btn btn-info"
+                    >
+                      <i class="fas fa-arrow-circle-left"></i>previous
+                    </button>
+                  </div>
+                </mat-tab>
+              </mat-tab-group>
+
+              <br />
+
+              <div class="table-responsive">
+                <table class="table table-borderless hover">
+                  <thead class="thead-light">
+                    <th>Name</th>
+                    <th>Is Percentage</th>
+                    <th>Is Tariff</th>
+                    <th>Amount</th>
+                    <th>Value</th>
+                    <th>Has Limit</th>
+                    <th>Use Formula</th>
+
+                    <th>
+                      Action
+                      <!--
+                        <a
+                        hidden
+                        class="btn btn-warning btn-sm"
+                        (click)="
+                          openForEditLoanCharges(
+                            
+                          null,
+                            loanservice.LoanApplicationForm.LoanId
+                          )
+                        "
+                        ><i class="fa fa-plus-circle"></i>Add Charges</a
+                      >
+                      -->
+                    </th>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let items of loanservice.LoanCharges;
+                        let i = index
+                      "
+                    >
+                      <td>{{ items.Name }}</td>
+                      <td>{{ items.IsPercentage }}</td>
+                      <td>{{ items.IsTariffBased }}</td>
+                      <td>{{ items.Amount }}</td>
+                      <td>{{ items.Value }}</td>
+                      <td>{{ items.HasLimit }}</td>
+                      <td>{{ items.UseFormula }}</td>
+                      <td class="last-child">
+                        <a
+                          style="color: white"
+                          class="btn btn-info btn-sm"
+                          (click)="
+                            openForEditLoanCharges(items.LoanTypeChargesId)
+                          "
+                          ><i class="fas fa-pen"></i
+                        ></a>
+
+                        <a
+                          class="btn btn-sm btn-danger text-white ml-1"
+                          (click)="
+                            onDeleteCharge(
+                              items.LoanApplicationChargesId,
+                              i,
+                              loanservice.LoanApplicationForm.LoanId
+                            )
+                          "
+                          ><i class="fa fa-trash"></i
+                        ></a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <button
+                    type="submit"
+                    *ngIf="!loading"
+                    class="btn btn-primary"
+                  >
+                    <i class="fa fa-database"></i> SUBMIT
+                  </button>
+                </div>
+                <div
+                  id="sa-success"
+                  *ngIf="loading"
+                  (click)="successmsg()"
+                ></div>
+              </div>
+            </form>
+          </mat-card>
+        </div>
+        <div class="col-sm-2">
+          <mat-card style="background: whitesmoke">
+            <h4 style="color: blue">Loan Process</h4>
+            <br />
+            <div>
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                (click)="openForEditCollateral(null, CollateralId)"
+              >
+                <i class="fa fa-plus-circle"></i>Add Collateral
+              </button>
+              <br />
+              <br />
+              <button
+                type="button"
+                class="btn btn-outline-info btn-sm"
+                (click)="openForEditGuarantors(null, GuarantorId)"
+              >
+                <i class="fa fa-plus-circle"></i>Add Guarantors
+              </button>
+            </div>
+            <br />
+            <!--
+          ... comment for please make sure you complete the loan process
+       
+            <p style="color: brown">
+              <i class="fa fa-exclamation-triangle"></i>>>Please make sure you
+              complete all the loan application Process
+            </p>
+     -->
+          </mat-card>
+        </div>
+      </div>
+      <mat-tab-group style="margin-left: 2%; padding-bottom: 5%">
+        <mat-tab label="Loan Collaterals">
+          <div class="table-responsive">
+            <table class="table table-borderless hover">
+              <thead class="thead-light">
+                <th>Collateral Name</th>
+                <th>Owner Name</th>
+                <th>Registration Details</th>
+                <th>Actual Value</th>
+                <th>Forced Sale Value</th>
+                <th>Remarks</th>
+                <th>Expiry Date</th>
+                <th>Action</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let items of LoanCollateralList; let i = index">
+                  <td
+                    (click)="openForEditCollateral(i, items.LoanCollateralId)"
+                  >
+                    {{ getCollateralName(items.CollateralId) }}
+                  </td>
+                  <td
+                    (click)="openForEditCollateral(i, items.LoanCollateralId)"
+                  >
+                    {{ items.OwnerName }}
+                  </td>
+                  <td
+                    (click)="openForEditCollateral(i, items.LoanCollateralId)"
+                  >
+                    {{ items.RegistrationDetails }}
+                  </td>
+                  <td
+                    (click)="openForEditCollateral(i, items.LoanCollateralId)"
+                  >
+                    {{ items.ActualValue | number }}
+                  </td>
+                  <td
+                    (click)="openForEditCollateral(i, items.LoanCollateralId)"
+                  >
+                    {{ items.ForcedSaleValue | number }}
+                  </td>
+                  <td
+                    (click)="openForEditCollateral(i, items.LoanCollateralId)"
+                  >
+                    {{ items.Remarks }}
+                  </td>
+                  <td
+                    (click)="openForEditCollateral(i, items.LoanCollateralId)"
+                  >
+                    {{ items.ExpiryDate | date: "y-MMM-d" }}
+                  </td>
+                  <td>
+                    <a
+                      type="button"
+                      class="btn btn-primary btn-sm"
+                      (click)="openForEditCollateral(i, items.LoanCollateralId)"
+                      ><i class="fas fa-pen"></i
+                    ></a>
+                    <a
+                      class="btn btn-danger btn-sm ml-1"
+                      (click)="DeleteCollateral(items.LoanCollateralId)"
+                    >
+                      <i class="fa fa-trash"></i
+                    ></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-tab>
+        <mat-tab label="Loan Guarantors ">
+          <div class="table-responsive">
+            <table class="table table-borderless hover">
+              <thead class="thead-light">
+                <th>Member No</th>
+                <th>Full Name</th>
+                <th>IdNo</th>
+                <th>Guarantor Type</th>
+                <th>Guaranteed Amount</th>
+                <th>Action</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let items of LoanGuarantorList; let i = index">
+                  <td (click)="openForEditGuarantors(i, items.LoanGuarantorId)">
+                    {{ getMemberNo(items.MemberId) }}
+                  </td>
+                  <td (click)="openForEditGuarantors(i, items.LoanGuarantorId)">
+                    {{ items.FullName }}
+                  </td>
+                  <td (click)="openForEditGuarantors(i, items.LoanGuarantorId)">
+                    {{ items.IdNo }}
+                  </td>
+                  <td (click)="openForEditGuarantors(i, items.LoanGuarantorId)">
+                    {{ getGuarantorType(items.GuarantorTypeId) }}
+                  </td>
+                  <td (click)="openForEditGuarantors(i, items.LoanGuarantorId)">
+                    {{ items.GuaranteedAmount | number }}
+                  </td>
+                  <td>
+                    <a
+                      type="button"
+                      class="btn btn-primary btn-sm"
+                      (click)="openForEditGuarantors(i, items.LoanGuarantorId)"
+                      ><i class="fas fa-pen"></i
+                    ></a>
+                    <a
+                      class="btn btn-danger btn-sm ml-1"
+                      (click)="DeleteGuarators(items.LoanGuarantorId)"
+                    >
+                      <i class="fa fa-trash"></i
+                    ></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-tab>
+        <mat-tab label="Other Charges">
+          <div class="table-responsive">
+            <table class="table table-borderless hover">
+              <thead class="thead-light">
+                <th>LoanTypeChargesId</th>
+                <th>Is Percentage</th>
+                <th>Is Tariff</th>
+                <th>Value</th>
+                <th>Amount</th>
+                <th>Action</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let items of LoanChargesList">
+                  <td>{{ getLoanTypeName(items.LoanChargesListId) }}</td>
+                  <td>{{ items.IsPercent }}</td>
+                  <td>{{ items.IsTariff }}</td>
+                  <td>{{ items.Value }}</td>
+                  <td>{{ items.Amount }}</td>
+                  <td>
+                    <a
+                      class="btn btn-danger btn-sm ml-1"
+                      (click)="DeleteCharge(items.LoanApplicationChargesId)"
+                    >
+                      <i class="fa fa-trash"></i
+                    ></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>

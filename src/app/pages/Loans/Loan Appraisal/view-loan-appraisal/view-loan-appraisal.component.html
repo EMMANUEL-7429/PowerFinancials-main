@@ -1,0 +1,78 @@
+<div class="container-fluid">
+  <!-- start page title -->
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div
+        class="page-title-box d-sm-flex align-items-center justify-content-between"
+      >
+        <h4 class="mb-sm-0 font-size-18">Loan Approval</h4>
+
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">Loan </li>
+            <li class="breadcrumb-item active">
+              <a href="javascript: void(0);" routerLink="/loan-application-list"
+                >View Loans</a
+              >
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+  <div style="background-color: white; padding: 10px">
+    <div *ngIf="isNodeLoading">
+    
+      <div style="color: red; font-size: 14px" class="animate">
+        <i
+        class="bx bx-loader bx-spin font-size-16 align-middle me-2"
+        style="color: red"
+      ></i>
+        Please wait...
+      </div>
+    </div>
+       
+           <div style="padding: 30px;" class="table-responsive">
+              <table datatable class="table table-bordered "  *ngIf="this.temp"  style="font-size:12px"  >
+                <thead>
+                  <tr >
+                    <th >Member Number</th>
+                    <th >Full Name</th>
+                    <th >Loan Type</th>
+                    <th >Loan Amount</th>
+                    <th >Interest Rate</th>
+                    <th >Application Date</th>
+                     <th >Period Frequency</th>
+                     <th >Repay Period</th>
+                      <th style="padding-right:40px;padding-left:40px">Action</th>
+                      <th style="padding-right:40px;padding-left:40px">Disbursement </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let items of LoanList">    
+                   <td (click)="openforEditLoan(items.LoanId)"> {{getMemberNo(items.MemberId)}}</td>
+                   <td (click)="openforEditLoan(items.LoanId)"> {{getMemberName(items.MemberId)}}</td>
+                   <td (click)="openforEditLoan(items.LoanId)">{{getLoanTypeName(items.LoanTypeId)}}</td>
+                  
+                    <td (click)="openforEditLoan(items.LoanId)">{{items.LoanAmount|number: '1.2-2'}}</td>    
+                    <td (click)="openforEditLoan(items.LoanId)">{{items.InterestRate}}</td> 
+                    <td (click)="openforEditLoan(items.LoanId)">{{items.ApplicationDate| date: 'd-MMM-y'}}</td> 
+                    <td (click)="openforEditLoan(items.LoanId)">{{items.PeriodFrequency}}</td> 
+                    <td (click)="openforEditLoan(items.LoanId)">{{items.RepayPeriod}}</td>  
+                    <td>   
+                       <button (click)="openforEditLoan(items.LoanId)" class="btn btn-sm btn-light"><i style="color:blue" class="fas fa-pen"></i></button> 
+                       <button (click)="OnDeleteLoan(items.LoanId)" class="btn btn-sm btn-light ml-1"><i style="color:red" class="fa fa-trash"></i></button>         
+                   </td> 
+                   <td>
+                    <button (click)="OpentoApproveLoan(items.LoanId)" class="btn btn-info btn-sm ml-1"><i  class="fa fa-thumbs-up"></i>Disburse Loan</button></td>   
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            </div>
+</div>
+
+       
+       

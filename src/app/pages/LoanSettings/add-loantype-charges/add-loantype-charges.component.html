@@ -1,0 +1,101 @@
+<div *ngIf="isDisconnected==true" class="alert alert-light">
+    <!--connection status starts here-->
+<div>
+  <label>No Internet Connection</label>
+</div>
+<hr>
+<div class="circle_Connection"><i class="fa fa-wifi" aria-hidden="true"></i>
+   <i class="fa fa-times-circle" class="smallIcon" aria-hidden="true"></i>
+</div>
+<br>
+<label text-wrap>Please check your connection and try again</label>
+<hr>
+<div class="card-text">
+  <button class="btn btn-block btn-primary" (click)="Reload()"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Refresh</button>
+</div> 
+</div>
+
+
+
+<h3 style="color: blue;">Loan Type Charges</h3>
+<mat-card>
+<div class="row" style="margin:2px">
+
+<div class="col-sm-3">
+<label>Loan Charges List Name</label>
+<select class="form-select"  [(ngModel)]="LoanChargesListId" style="margin-bottom: 10px;"  (ngModelChange)=" getLoanChargesListName(LoanChargesListId)" [class.is-invalid]="!isValid && LoanChargesListId==0">
+  <option selected value="0">-Not Selected-</option>
+  <option *ngFor="let item of LoanChargesList" value="{{item.LoanChargesListId}}">{{item.Name}}</option>
+</select>
+</div>
+
+<div class="col-sm-3">     
+<label>Name<strong style="color: red;"> *</strong></label>
+<input  type="text" [(ngModel)]="Name" class="form-control" 
+[class.is-invalid]="!isValid && Name==''">
+</div>
+
+
+<div class="col-sm-3" style="margin-top: 35px;">
+  <input type="checkbox" [(ngModel)]="IsTariffBased"  style="width:20px;height:20px"> &nbsp;<label>Is Tariff Based</label>  
+  </div>
+
+<div class="col-sm-3" *ngIf="IsTariffBased==false">
+  <label>Amount</label>
+  <input  type="text" [(ngModel)]="Amount" class="form-control" >
+  </div>
+
+
+
+
+          
+</div>
+<div class="row" style="margin:2px" *ngIf="IsTariffBased==false">
+<div class="col-sm-4" style="margin-top: 35px;">
+<input type="checkbox" [(ngModel)]="IsPercentage"  style="width:20px;height:20px"> &nbsp;<label>Is Percentage</label>  
+</div>
+
+<div class="col-sm-4" *ngIf="IsPercentage==true">
+<label>Value</label>
+<input  type="text" [(ngModel)]="Value" class="form-control" >
+</div>
+
+<div class="col-sm-4">
+<label>Period To Charge</label>
+<input  type="text" [(ngModel)]="PeriodToCharge" class="form-control" >
+</div>
+</div>
+<div class="row" style="margin:2px">
+    <div class="col-sm-3" style="margin-top: 35px;">
+    <input type="checkbox" [(ngModel)]="HasLimit"  style="width:20px;height:20px"> &nbsp;<label>Has Limit</label>  
+    </div>
+
+    <div class="col-sm-3" *ngIf="HasLimit==true">
+    <label>Lower Limit</label>
+    <input  type="text" [(ngModel)]="LowerLimit" class="form-control" >
+    </div>
+
+    <div class="col-sm-3" *ngIf="HasLimit==true">
+    <label>Upper Limit</label>
+    <input  type="text" [(ngModel)]="UpperLimit" class="form-control" >
+    </div>              
+</div>
+<div class="row" style="margin:2px">       
+<div class="col-sm-3" style="margin-top: 35px;">
+<input type="checkbox" [(ngModel)]="UseFormula"  style="width:20px;height:20px"> &nbsp;<label>Use Formula</label>  
+</div>
+
+<div class="col-sm-3" *ngIf="UseFormula==true">
+<label>The Formula</label>
+<input  type="text" [(ngModel)]="TheFormula" class="form-control" >
+</div>
+          
+</div>
+
+  <div class="btn-group mr-2" *ngIf="!loading" role="group" aria-label="First group" style="margin-top: 10px;">
+    <button type="button" (click)="onSubmit(Name,IsTariffBased, IsPercentage, Value, Amount, PeriodToCharge, HasLimit,
+    LowerLimit, UpperLimit, UseFormula, TheFormula)" class="btn btn-primary ">Save &nbsp; <i class="fa fa-database"></i></button>&nbsp;
+    <button type="button" class="btn btn-danger  ml-2" (click)="onExit()">Cancel&nbsp;<i class="fas fa-window-close"></i></button>
+  </div>
+  <div id="sa-success" *ngIf="loading" (click)="successmsg()"></div>   
+</mat-card>

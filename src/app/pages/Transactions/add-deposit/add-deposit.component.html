@@ -1,0 +1,537 @@
+<div class="container-fluid">
+  <!-- start page title -->
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div
+        class="page-title-box d-sm-flex align-items-center justify-content-between"
+      >
+        <h4 class="mb-sm-0 font-size-18">Deposit Transaction</h4>
+
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">Transaction</li>
+            <li class="breadcrumb-item active">
+              <a href="javascript: void(0);" routerLink="/view-transaction"
+                >View list</a
+              >
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+  <div style="background-color: white; padding: 20px">
+    <div style="background-color: white; padding: 1%; padding-bottom: 4%">
+      <div
+        *ngIf="isDisconnected == true"
+        class="alert alert-light"
+        style="height: 1%"
+      >
+        <!--connection status starts here-->
+        <label text-wrap
+          ><i class="fa fa-wifi" aria-hidden="true"></i>Please check your
+          connection and try again
+          <button class="btn btn-primary" (click)="Reload()">
+            <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Refresh
+          </button></label
+        >
+      </div>
+      <div *ngIf="isValid == false">
+        <div class="btn btn-danger">
+          <i class="fa fa-exclamation-triangle"></i> Please fill required Fields
+        </div>
+      </div>
+      <form
+        #form="ngForm"
+        *ngIf="service.DepositForm"
+        (submit)="onSubmit(form)"
+        autocomplete="off"
+      >
+        <input
+          hidden
+          style="background-color: white"
+          name="TransactionId"
+          #TransactionId="ngModel"
+          [(ngModel)]="service.DepositForm.TransactionId"
+          class="form-control"
+        />
+        <input
+          hidden
+          style="background-color: white"
+          name="IsDeleted"
+          #IsDeleted="ngModel"
+          [(ngModel)]="service.DepositForm.IsDeleted"
+          class="form-control"
+        />
+        <div class="row">
+          <div class="col-sm-4">
+            <label>Member No<strong style="color: red">*</strong></label>
+            <div class="input-group">
+              <select
+                class="form-select"
+                name="MemberId"
+                #MemberId="ngModel"
+                style="background-color: white"
+                [(ngModel)]="service.DepositForm.MemberId"
+                (change)="updateMemberDetails($event.target)"
+                [class.is-invalid]="
+                  !isValid && service.DepositForm.MemberId == 0
+                "
+              >
+                <option value="0">Select</option>
+                <option
+                  *ngFor="let items of MemberList"
+                  value="{{ items.MemberId }}"
+                >
+                  {{ items.MemberNo }}-{{ items.MemberName }}
+                </option>
+              </select>
+              <!--div class="input-group-append">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    (click)="openForSeachMember(null)"
+                  >
+                    <i class="fa fa-search"></i>
+                  </button>
+                </div-->
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <label>Full Name</label>
+            <input
+              readonly
+              type="text"
+              name="FullName"
+              [(ngModel)]="FullName"
+              class="form-control"
+            />
+          </div>
+          <div class="col-sm-4">
+            <label>Id No</label>
+            <div class="input-group">
+              <input
+                class="form-control"
+                name="IdNo"
+                #IdNo="ngModel"
+                [(ngModel)]="service.DepositForm.IdNo"
+                readonly
+              />
+              &nbsp;
+              <div class="input-group-append">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="openForSeachMember(null)"
+                >
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!--
+                   <div class="col-sm-4">
+              <label>IdNo</label>
+              <input
+                readonly
+                type="text"
+                name="IdNo"
+                [(ngModel)]="loanservice.LoanApplicationForm.IdNo"
+                class="form-control"
+              />
+              &nbsp;
+              <div class="input-group-append">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="openForSeachMember(null)"
+                >
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+            -->
+        </div>
+
+        <br />
+
+        <div class="row">
+          <!--div class="col-sm-3">
+              <label>Product Type<strong style="color: red">*</strong></label>
+              <select
+                class="form-control"
+                type="text"
+                style="background-color: white"
+                style="background-color: white"
+                name="ProductId"
+                #ProductId="ngModel"
+                [(ngModel)]="service.DepositForm.ProductId"
+                (change)="ProductDetails(service.DepositForm.ProductId)"
+                [class.is-invalid]="
+                  !isValid && service.DepositForm.ProductId == 0
+                "
+              >
+                <option value="0">-Select</option>
+                <option
+                  *ngFor="let items of Productlist"
+                  value="{{ items.ProductId }}"
+                >
+                  {{ items.Description }}
+                </option>
+              </select>
+            </div-->            
+          
+          <div class="col-sm-3">
+            <label>Account Number</label>
+            <select
+              class="form-select"
+              style="background-color: white"
+              [(ngModel)]="service.DepositForm.MembershareId"
+              name="MembershareId"
+              #MembershareId="ngModel"
+            >
+              <option
+                *ngFor="let items of MemberShareList"
+                value="{{ items.MemberShareId }}"
+              >
+                {{ items.AccountNo }}
+              </option>
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <label
+              >Deposit Amount<strong style="color: red">*</strong>
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              style="background-color: white"
+              [(ngModel)]="service.DepositForm.Amount"
+              name="Amount"
+              #Amount="ngModel"
+              (keyup)="updateBalanceAmount()"
+              [class.is-invalid]="!isValid && service.DepositForm.Amount <= 0"
+            />
+          </div>
+          <div class="col-sm-3">
+            <label>Mode Of Payment</label>
+            <select
+              class="form-select"
+              style="background-color: white"
+              name="ModeofPaymentID"
+              #ModeofPaymentID="ngModel"
+              (change)="createDescription($event.target)"
+              [(ngModel)]="service.DepositForm.ModeofPaymentID"
+            >
+              <option
+                *ngFor="let items of PayModeList"
+                value="{{ items.PaymentModeId }}"
+              >
+                {{ items.Description }}
+              </option>
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <label>Description <strong style="color: red">*</strong></label>
+            <input
+              type="text"
+              class="form-control"
+              style="background-color: white"
+              name="Description"
+              #Remarks="ngModel"
+              [(ngModel)]="service.DepositForm.Description"
+              [class.is-invalid]="
+                !isValid && service.DepositForm.Description == ''
+              "
+            />
+          </div>
+        </div>       
+
+          <br />
+
+          <div class="row">            
+            <div class="col-sm-3">
+              <label>Bank</label>
+              <select
+                style="background-color: white"
+                class="form-select"
+                name="BranchId"
+                #BranchId="ngModel"
+                (change)="createDescription($event.target)"
+                [(ngModel)]="service.DepositForm.BranchId"
+              >
+                <option value="0">-Select</option>
+                <option
+                  *ngFor="let items of BankBranchesList"
+                  value="{{ items.BranchId }}"
+                >
+                  {{ items.BankName }}:{{ items.AccountNumber }}
+                </option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <label>Transaction Type</label>
+              <select
+                type="text"
+                style="background-color: white"
+                class="form-control"
+                name="TransactionType"
+                #TransactionType="ngModel"
+                [(ngModel)]="service.DepositForm.TransactionType"
+              >
+                <option value="0">-Select</option>
+                <option value="Cash">Cash</option>
+                <option value="Bank">Bank</option>
+                <option value="Journal">Journal</option>
+                <option value="Transfer">Transfer</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <label>Transaction Date</label>
+              <input
+                type="date"
+                style="background-color: white"
+                data-date=""
+                name="TransDate"
+                #TransDate="ngModel"
+                [(ngModel)]="service.DepositForm.TransDate"
+                class="form-control"
+              />
+            </div>
+            <div class="col-sm-3">
+              <label>Document Number</label>
+              <input
+                class="form-control"
+                type="text"
+                style="background-color: white"
+                name="DocumentNo"
+                #DocumentNo="ngModel"
+                [(ngModel)]="service.DepositForm.DocumentNo"
+              />
+            </div>
+          </div>
+          <br />
+
+          <div class="row">
+            <div class="col-sm-3">
+              <label>Value Date</label>
+              <input
+                type="date"
+                style="background-color: white"
+                name="ValueDate"
+                #ValueDate="ngModel"
+                [(ngModel)]="service.DepositForm.ValueDate"
+                class="form-control"
+              />
+            </div>
+            <div class="col-sm-3">
+              <label>Paid By</label>
+              <input
+                type="text"
+                style="background-color: white"
+                class="form-control"
+                [(ngModel)]="service.DepositForm.PaidBy"
+                name="PaidBy"
+                #PaidBy="ngModel"
+              />
+            </div>
+            <div class="col-sm-3">
+              <label>Remarks</label>
+              <input
+                type="text"
+                class="form-control"
+                style="background-color: white"
+                name="Remarks"
+                #Remarks="ngModel"
+                [(ngModel)]="service.DepositForm.Remarks"
+              />
+            </div>            
+          </div>        
+        <br />
+        <div class="row" style="display: none" [hidden]="!UsingMulticurency">
+          <div class="col-sm-3">
+            <label>Currency<strong style="color: red">*</strong> </label>
+            <select
+              class="form-select"
+              style="background-color: white"
+              name="CurrencyId"
+              #CurrencyId="ngModel"
+              [(ngModel)]="service.DepositForm.CurrencyId"
+              (change)="convertCurrency(service.DepositForm.CurrencyId)"
+              (change)="updateCurrencyDetails($event.target)"
+              [class.is-invalid]="
+                !isValid && service.DepositForm.CurrencyId == 0
+              "
+            >
+              <!--option *ngFor="let items of DefaultCurrencyLists" value="0">
+                    {{ items.CurrencyName }}
+                  </option-->
+              <option
+                *ngFor="let items of CurrencyList"
+                value="{{ items.CurrencyId }}"
+              >
+                {{ items.CurrencyName }}
+              </option>
+            </select>
+          </div>
+          <!--div class="col-sm-3">
+                <label>Currency Symbol </label>
+                <input
+                  type="text"
+                  readonly
+                  readonly
+                  class="form-control"
+                  [(ngModel)]="service.DepositForm.CurrencySymbol"
+                  name="CurrencySymbol"
+                  #CurrencySymbol="ngModel"
+                />
+              </div-->
+          <div class="col-sm-3">
+            <label>Exchange Rate </label>
+            <input
+              type="text"
+              readonly
+              class="form-control"
+              name="ExchangeRate"
+              class="form-control"
+              #ExchangeRate="ngModel"
+              [(ngModel)]="service.DepositForm.ExchangeRate"
+            />
+          </div>
+          <div class="col-sm-3">
+            <label>Base Currency </label>
+            <input
+              name="BaseCurrencyId"
+              readonly
+              class="form-control"
+              #BaseCurrencyId="ngModel"
+              [(ngModel)]="service.DepositForm.BaseCurrencyId"
+            />
+          </div>
+        </div>
+
+        <div class="row" style="display: none" [hidden]="!UsingMulticurency">
+          <div class="col-sm-3">
+            <label>Local Currency Amount </label>
+            <input
+              type="text"
+              class="form-control"
+              readonly
+              name="LocalCurrencyAmount"
+              #LocalCurrencyAmount="ngModel"
+              [(ngModel)]="service.DepositForm.LocalCurrencyAmount"
+            />
+          </div>
+          <div class="col-sm-3">
+            <label>Charge Amount </label>
+            <input
+              type="text"
+              readonly
+              class="form-control"
+              [(ngModel)]="service.DepositForm.AmountCharge"
+              name="AmountCharge "
+              #AmountCharge="ngModel"
+              (keyup)="updateBalanceAmount()"
+            />
+          </div>
+          <div class="col-sm-3">
+            <label>Balance Amount </label>
+            <input
+              type="text"
+              readonly
+              class="form-control"
+              [(ngModel)]="service.DepositForm.BalanceAmount"
+              name="BalanceAmount"
+              #BalanceAmount="ngModel"
+            />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3">
+            <input
+              type="checkbox"
+              name="Commission"
+              #Commission="ngModel"
+              [(ngModel)]="service.DepositForm.Commission"
+              style="width: 30px; height: 30px"
+            />
+            &nbsp;<label>Commission/Charges</label>
+          </div>
+        </div>
+
+        <div *ngIf="service.DepositForm.Commission">
+          <div class="table-responsive">
+            <table class="table table-bordered" style="color: #262b3c">
+              <thead class="thead-dark">
+                <th>Charges Name</th>
+                <th>Is Percent</th>
+                <th>Amount</th>
+                <th>Total</th>
+                <th>
+                  <a
+                    class="btn btn-success"
+                    style="background-color: green; color: white"
+                    (click)="
+                      AddorEditCharge(null, service.DepositForm.TransactionId)
+                    "
+                    ><i class="fa fa-plus-square"></i>Add charge</a
+                  >
+                </th>
+              </thead>
+              <tbody>
+                <tr *ngIf="service.TransactionCharges.length == 0">
+                  <td style="text-align: center" colspan="5">
+                    No Charge/Commission is select for this transaction
+                  </td>
+                </tr>
+                <tr
+                  *ngFor="
+                    let items of service.TransactionCharges;
+                    let i = index
+                  "
+                >
+                  <td>{{ items.ChargesName }}</td>
+                  <td>{{ items.IsPercent }}</td>
+                  <td>{{ items.Amount }}</td>
+                  <td>{{ items.Total }}</td>
+                  <td>
+                    <a
+                      style="color: white"
+                      class="btn btn-info btn-sm"
+                      (click)="
+                        AddorEditCharge(i, service.DepositForm.TransactionId)
+                      "
+                      ><i class="fa fa-pen"></i
+                    ></a>
+                    <a
+                      class="btn btn-sm btn-danger text-white ml-1"
+                      (click)="
+                        onDeleteCharge(
+                          items.TransactionChargesId,
+                          i,
+                          service.DepositForm.TransactionId
+                        )
+                      "
+                      ><i class="fa fa-trash"></i
+                    ></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+          <i class="fa fa-database"> &nbsp; </i>SUBMIT<i
+            class="fa fa-spinner fa-spin"
+            *ngIf="loading"
+          ></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

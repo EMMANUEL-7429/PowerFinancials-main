@@ -1,0 +1,73 @@
+<div class="container-fluid">
+    <!-- start page title -->
+    <!-- start page title -->
+    <div class="row">
+      <div class="col-12">
+        <div
+          class="page-title-box d-sm-flex align-items-center justify-content-between"
+        >
+          <h4 class="mb-sm-0 font-size-18">Modes of Payment List</h4>
+  
+          <div class="page-title-right">
+            <ol class="breadcrumb m-0">
+              <li class="breadcrumb-item">Member Settings</li>
+              <li class="breadcrumb-item active">
+                <a href="javascript: void(0);" routerLink="/Paymodes"
+                  >Add Payment Mode</a
+                >
+              </li>
+            </ol>
+          </div>
+        </div>
+        <!-- end page title -->
+        <div style="background-color: white; padding: 10px">
+          <div *ngIf="isNodeLoading">
+            <div style="color: red; font-size: 14px" class="animate">
+              Please wait...
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table
+              datatable
+              class="table table-bordered"
+              *ngIf="this.temp"
+              style="font-size: 12px"
+            >
+              <thead>
+                <tr>
+                  <th style="width: 30%">Name</th>
+                  <th style="width: 30%">Description</th>
+                  <th style="width: 30%">Is Default</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let items of paymodeList">
+                  <td>{{ items.Name }}</td>
+                  <td>{{ items.Description }}</td>
+                  <td>{{ items.IsDefault }}</td>
+                  <td>
+                    <a
+                      class="btn btn-light btn-sm"
+                      style="color: blue"
+                      (click)="openforPaymentMode(items.PaymentModeId)"
+                    >
+                      <i class="fas fa-pen"></i
+                    ></a>
+                    <a
+                      class="btn btn-light btn-sm ml-1"
+                      style="color: red"
+                      (click)="DeletePaymode(items.PaymentModeId)"
+                    >
+                      <i class="fa fa-trash"></i
+                    ></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>  
+  </div>
+  

@@ -1,0 +1,154 @@
+<div class="container-fluid">
+  <!-- start page title -->
+  <!-- start page title -->
+
+  
+
+  <div class="row">
+    <div class="col-12">
+      <div
+        class="page-title-box d-sm-flex align-items-center justify-content-between"
+      >
+        <h4 class="mb-sm-0 font-size-18">Loan Application</h4>
+
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">Loans</li>
+            <li class="breadcrumb-item active">
+              <a
+                href="javascript: void(0);"
+                routerLink="/loan-application-list"
+                >View list</a
+              >
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+  <div style="background-color: white; padding: 20px">
+    <div style="background-color: white; padding: 1%; padding-bottom: 4%">
+      <div
+        *ngIf="isDisconnected == true"
+        class="alert alert-light"
+        style="height: 1%"
+      >
+        <!--connection status starts here-->
+        <label text-wrap
+          ><i class="fa fa-wifi" aria-hidden="true"></i>Please check your
+          connection and try again
+          <button class="btn btn-primary" (click)="Reload()">
+            <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Refresh
+          </button></label
+        >
+      </div>
+      <div  *ngIf="isValid == false">
+        <a  class="btn btn-danger " style="color: white;">
+          Please fill required Field
+        </a>
+      </div>
+
+<div class="row">
+    <div class="col-sm-4">
+      <label>Member No<strong style="color:red"></strong></label>
+      <select class="form-control"  style="background-color: white;" [(ngModel)]="MemberId" (change)="updateMemberDetails($event.target)" >
+      <option value="0">-Select</option>
+      <option *ngFor="let items of MemberList" value="{{items.MemberId}}">{{items.MemberNo}}</option> 
+       </select>
+    </div>         
+  <div class="col-sm-4">
+      <label>Full Name</label>
+      <input  readonly type="text" name="FullName" [(ngModel)]="FullName" class="form-control" >
+      </div>
+      <div class="col-sm-4">
+      <label>Id No</label>
+      <div class="input-group"> 
+      <input readonly type="text" name="IdNo" [(ngModel)]="IdNo" class="form-control" >&nbsp;   
+      <div class="input-group-append">
+        <button type="button" class="btn btn-danger"  (click)="openForSeachMember(null)">
+            <i class="fa fa-search"></i>
+        </button>
+      </div>
+      </div>
+      </div>         
+      </div>
+      <br>
+      <div >
+      <div >
+        <hr>
+        <br>
+          <table datatable class="table table-bordered "  >
+              <thead>                                      
+                  <th>Loan Name</th>
+                  <th>Loan Code</th>
+                  <th>Loan Amount</th>
+                  <th>Interest Rate</th>
+                  <th>Repay Period</th>
+                  <th>Disbursed Date</th>                 
+                </thead>
+              <tbody>
+               <tr *ngFor="let items of MemberLoanList">                                      
+                <td (click)="onView(items.LoanId)">{{getLoanName(items.LoanTypeId)}}</td>
+                <td (click)="onView(items.LoanId)">{{items.Code}}</td>
+                <td (click)="onView(items.LoanId)">{{items.LoanAmount|number: '1.2-2'}}</td>
+                <td (click)="onView(items.LoanId)">{{items.InterestRate}}</td>
+                <td (click)="onView(items.LoanId)">{{items.RepayPeriod}}</td>                  
+                  <td (click)="onView(items.LoanId)">{{items.DisbursementDate| date: 'd-MMM-y'}}</td>                  
+               </tr>
+              </tbody>
+          </table>
+      </div>
+      <br>
+      <div class="row" hidden>
+          <div class="col-md-4" >
+            <label>Loan</label>
+            <input  type="text" name="LoanId" [(ngModel)]="LoanId" class="form-control" >   
+          </div>
+          <div class="col-md-4">
+            <label>member id</label>
+            <input  type="text" name="MemberId" [(ngModel)]="MemberId" class="form-control" >   
+          </div>
+      </div>
+    </div>
+   
+      <div *ngIf="ShowTable">
+      <div >
+        <table datatable class="table table-bordered"  >
+            <thead>                 
+                <th>Repayment Number</th>
+                <th>Transaction Date</th>
+                <th>Value Date</th>                
+                <th>Voucher Number</th>
+                <th>Currency</th>
+                <th>Exchange Rate</th>
+                <th> Amount</th>
+                <th>Paid By</th>                 
+                                   
+                <th>
+                <a style="color:white" class="btn btn-success btn-sm" style="background-color: green;color: white;"  (click)="AddRepayment(null,RepaymentId)"><i class="fa fa-plus-square"></i>Add Repayment</a>
+                </th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let items of LoanRepaymentList; let i=index;">
+                 
+                    <td>{{items.RepaymentNo}}</td>
+                    <td>{{items.TransactionDate | date: 'd-MMM-y'}}</td>
+                    <td>{{items.ValueDate | date: 'd-MMM-y'}}</td>                        
+                    <td>{{items.VoucherNo}}</td>
+                    <td>{{getCurrencyName(items.CurrencyId)}}</td>
+                    <td>{{items.ExchangeRate}}</td>
+                    <td>{{items.Amount |number: '1.2-2'}}</td>
+                    <td>{{items.PaidBy}}</td>                       
+                    <td >
+                        <a type="button" class="btn btn-primary btn-sm" (click)="AddRepayment(i,items.RepaymentId)"><i class="fas fa-pen" ></i></a>
+                         <a class="btn btn-danger btn-sm ml-1"  (click)="DeleteRepayment(items.RepaymentId)" > <i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>   
+      </div>
+    </div> 
+    </div>
+  </div>
+</div>

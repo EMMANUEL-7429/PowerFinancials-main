@@ -1,0 +1,48 @@
+<h2>Password Setting</h2>
+<form #myForm="ngForm" class="row">
+  <!-- Left Column -->
+  <div class="col-md-6">
+    <label>Pwd Min Age:</label>
+    <input type="number" name="pwdminage" [(ngModel)]="formData.PwdMinAge" required>
+
+    <label>Pwd Max Age:</label>
+    <input type="number" name="pwdmaxage" [(ngModel)]="formData.PwdMaxAge" required>
+
+    <label>Pwd Min Length:</label>
+    <input type="number" name="pwdminlength" [(ngModel)]="formData.PwdMinLength" required>
+
+    <label>Pwd Max Length:</label>
+    <input type="number" name="PwdMaxLength" [(ngModel)]="formData.PwdMaxLength" required>
+
+    <label>Pwd Complex:</label>
+    <input type="checkbox" name="PwdComplex" [(ngModel)]="formData.PwdComplex">
+    <label>OTP Expiry:</label>
+    <input type="checkbox" name="OTPExpiry" [(ngModel)]="formData.OTPExpiry">
+  </div>
+
+  <!-- Right Column -->
+  <div class="col-md-6">
+    <label>Pwd History:</label>
+    <input type="number" name="PwdHistory" [(ngModel)]="formData.PwdHistory" required>
+
+    <label>Login Attempts:</label>
+    <input type="number" name="LoginAttempts" [(ngModel)]="formData.LoginAttempts" required>
+
+    <label>Created By:</label>
+    <input type="text" name="createdby" [(ngModel)]="formData.CreatedBy" required>
+
+    <label>Modified By:</label>
+    <input type="text" name="modifiedby" [(ngModel)]="formData.ModifiedBy" required>
+    <label>Use MultiFactor:</label>
+    <input type="checkbox" name="UseMultiFactor" [(ngModel)]="formData.UseMultiFactor">
+    <div class="col-12 mt-3">
+      <button type="submit" *ngIf="isUpdate" (click)="updateData(formData.id,formData)" class="btn btn-primary">
+        Update
+      </button>
+    </div>
+    
+  </div>
+
+  <!-- Update Button -->
+ 
+</form>

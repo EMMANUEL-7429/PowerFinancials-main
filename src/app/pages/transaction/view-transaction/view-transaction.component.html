@@ -1,0 +1,127 @@
+<!-- start page title -->
+<!-- start page title -->
+<div class="row">
+  <div class="col-12">
+    <div
+      class="page-title-box d-sm-flex align-items-center justify-content-between"
+    >
+      <h4 class="mb-sm-0 font-size-18">Transaction List</h4>
+
+      <div class="page-title-right">
+        <ol class="breadcrumb m-0">
+          <li class="breadcrumb-item">Transaction</li>
+          <li class="breadcrumb-item active">
+            <a href="javascript: void(0);" routerLink="/deposit-transaction"
+              >Add Transaction</a
+            >
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end page title -->
+<div style="background-color: white; padding: 10px">
+  <div *ngIf="isNodeLoading">
+    <i
+      class="bx bx-loader bx-spin font-size-16 align-middle me-2"
+      style="color: red"
+    ></i>
+    <div style="color: red; font-size: 14px" class="animate">
+      Please wait...
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <label>Member No:</label>
+      <div class="input-group">
+        <select
+          class="form-control"
+          [(ngModel)]="MemberNo"
+          readonly
+          (change)="getMemberDetails($event.target)"
+        >
+          <option value="0">Select MemberNo</option>
+          <option *ngFor="let items of memberList" value="{{ items.MemberId }}">
+            {{ items.MemberNo }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <label>Full Name:</label>
+      <input class="form-control" readonly [(ngModel)]="FullName" />
+    </div>
+    <div class="col-sm-4">
+      <label>Id No:</label>
+      <input class="form-control" readonly [(ngModel)]="IdNo" />
+    </div>
+  </div>
+  <br />
+  <div id="print-section" hidden>
+    <div style="text-align: center">
+      <img
+        src="assets/img/trans.jpg"
+        style="width: 100px; height: 100px; border-radius: 50%"
+      />
+    </div>
+    <h2 style="text-align: center; color: blue">Accounts Statement</h2>
+    <hr />
+    <div>
+      <p style="font-size: 16px">FullName: {{ name }}</p>
+      <p style="font-size: 16px">Id Number: {{ Id }}</p>
+      <p style="font-size: 16px">Date Print: {{ Date | date: "d-MMM-y" }}</p>
+      <p>Person print:<strong>Admin</strong></p>
+    </div>
+    <table
+      datatable
+      class="table table-bordered"
+      style="width: 100%"
+      style="font-size: 12px"
+    >
+      <tr>
+        <td style="width: 40%">Account Name</td>
+        <td style="width: 30%">Contribution Rate</td>
+        <td style="width: 30%">Minimum Balance</td>
+      </tr>
+      <tr *ngFor="let item of MemberSharedList">
+        <td style="width: 40%">{{ getproductName(item.ProductId) }}</td>
+        <td style="width: 30%">
+          {{ item.ContributionRate | number: "1.2-2" }}
+        </td>
+        <td style="width: 30%">{{ item.MinBalance | number: "1.2-2" }}</td>
+      </tr>
+    </table>
+  </div>
+  <table datatable class="table table-bordered" *ngIf="ShowTable">
+    <thead>
+      <th>Account Name</th>
+      <th>Account Number</th>
+      <th>Contribution Rate</th>
+      <th>Minimum Balance</th>
+      <th>Transactions-</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of MemberSharedList">
+        <td>{{ getproductName(item.ProductId) }}</td>
+        <td>{{ item.AccountNo }}</td>
+        <td style="text-align: right">
+          {{ item.ContributionRate | number: "1.2-2" }}
+        </td>
+        <td style="text-align: right">
+          {{ item.MinBalance | number: "1.2-2" }}
+        </td>
+        <td>
+          <a
+            class="btn btn-info btn-sm"
+            (click)="
+              AddPassTransaction(item.MemberId, item.ProductId, item.AccountNo)
+            "
+            ><i class="fa fa-table"></i>&nbsp; View Transaction</a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

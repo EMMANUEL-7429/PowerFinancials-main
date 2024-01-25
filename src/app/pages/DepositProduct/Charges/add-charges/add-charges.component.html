@@ -1,0 +1,213 @@
+<div class="container-fluid">
+  <!-- start page title -->
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div
+        class="page-title-box d-sm-flex align-items-center justify-content-between"
+      >
+        <h4 class="mb-sm-0 font-size-18">Charges</h4>
+
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">Product Settings</li>
+            <li class="breadcrumb-item active">
+              <a href="javascript: void(0);" routerLink="/view-charges"
+                >View list</a
+              >
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+  <div style="background-color: white; padding: 20px">
+    <div style="background-color: white; padding: 1%; padding-bottom: 4%">
+      <div
+        *ngIf="isDisconnected == true"
+        class="alert alert-light"
+        style="height: 1%"
+      >
+        <!--connection status starts here-->
+        <label text-wrap
+          ><i class="fa fa-wifi" aria-hidden="true"></i>Please check your
+          connection and try again
+          <button class="btn btn-primary" (click)="Reload()">
+            <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Refresh
+          </button></label
+        >
+      </div>
+      <div class="loader-inner ball-clip-rotate" *ngIf="isValid == false">
+        <div style="color: white; background-color: rosybrown; padding: 10px">
+          Please fill required Field
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="col-mb-3">
+            <label>Code</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="Code"
+              [class.is-invalid]="!isValid && Code == ''"
+            />
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <label>Description</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="Description"
+            [class.is-invalid]="!isValid && Description == ''"
+          />
+        </div>
+        <div class="col-sm-4">
+          <label>Lower Limit</label>
+          <input type="text" class="form-control" [(ngModel)]="LowerLimit" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4">
+          <label>Upper Limit</label>
+          <input type="text" class="form-control" [(ngModel)]="UpperLimit" />
+        </div>
+        <div class="col-sm-4 mt-5">
+          <input type="checkbox" [(ngModel)]="IgnoreLowLimit" />
+          <label style="margin-left: 2%"> Ignore Value below Lower Limit</label>
+
+          &nbsp;
+        </div>
+      </div>
+
+      <div class="row" *ngIf="Tariff == false">
+        <div class="col-sm-2" style="padding-top: 2.5%">
+          <input type="checkbox" [(ngModel)]="IsPercent" />
+          &nbsp;<label>Is Percent</label>
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4">
+          <div *ngIf="IsPercent">
+            <label>Percentage(%)</label>
+            <input class="form-control" [(ngModel)]="Value" />
+          </div>
+          <div *ngIf="!IsPercent">
+            <label>Amount</label>
+            <input class="form-control" [(ngModel)]="Value" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="IsPercent == false">
+        <div class="col-sm-4">
+          <input type="checkbox" [(ngModel)]="Tariff" />
+          &nbsp;<label>Tariff</label>
+        </div>
+      </div>
+
+      <div *ngIf="Tariff == true">
+        <div class="loader-inner ball-clip-rotate" *ngIf="isTValid == false">
+          <div style="color: white; background-color: rosybrown; padding: 10px">
+            Please fill required Field
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">
+            <label>From</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="Start"
+              style="background: white"
+              [class.is-invalid]="!isTValid && Start == 0"
+            />
+          </div>
+          <div class="col-sm-3">
+            <label>To</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="Stop"
+              style="background: white"
+              [class.is-invalid]="!isTValid && Stop == 0"
+            />
+          </div>
+          <div class="col-sm-3">
+            <label> Charge Amount</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="ChargeAmount"
+              style="background: white"
+              [class.is-invalid]="!isTValid && ChargeAmount == 0"
+            />
+          </div>
+          <div class="col-sm-3" style="padding-top: 2.5%">
+            <button
+              type="submit"
+              (click)="OnSubmitTariff(Start, Stop, ChargeAmount)"
+              class="btn btn-outline-primary"
+            >
+              <i class="fa fa-database"></i> Submit<i
+                class="fa fa-spinner fa-spin"
+                *ngIf="loading"
+              ></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div style="padding: 1%" class="table-responsive">
+          <table class="table table-striped table-bordered hover">
+            <thead>
+              <tr>
+                <th>From</th>
+                <th>To</th>
+                <th>Charge Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let items of TariffList">
+                <td>{{ items.Start | number }}</td>
+                <td>{{ items.Stop | number }}</td>
+                <td>{{ items.ChargeAmount | number }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <button
+          type="submit"
+          *ngIf="!loading"
+          (click)="
+            onSubmit(
+              Code,
+              Description,
+              IsPercent,
+              Value,
+              Tariff,
+              TariffAmount,
+              IgnoreLowLimit,
+              LowerLimit,
+              UpperLimit
+            )
+          "
+          class="btn btn-primary"
+        >
+          <i class="fa fa-database"></i> Submit
+        </button>
+      </div>
+      <div id="sa-success" *ngIf="loading" (click)="successmsg()"></div>
+    </div>
+  </div>
+</div>

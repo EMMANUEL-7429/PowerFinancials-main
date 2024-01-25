@@ -1,0 +1,69 @@
+<div class="container-fluid">
+    <!-- start page title -->
+    <!-- start page title -->
+    <div class="row">
+      <div class="col-12">
+        <div
+          class="page-title-box d-sm-flex align-items-center justify-content-between"
+        >
+          <h4 class="mb-sm-0 font-size-18">Grouped Options</h4>
+  
+        </div>
+      </div>
+    </div>
+    <!-- end page title -->
+    <div style="background-color: white; padding: 10px">
+      <div *ngIf="isNodeLoading">
+        <i
+          class="bx bx-loader bx-spin font-size-16 align-middle me-2"
+          style="color: red"
+        ></i>
+        <div style="color: red; font-size: 14px" class="animate">
+          Please wait...
+        </div>
+      </div>
+      <table
+        datatable
+        class="table table-bordered"
+        *ngIf="this.temp"
+        style="font-size: 12px"
+      >
+        <thead>
+          <tr>
+            <th>Group Option</th>
+            <th>Sub Option</th>
+            <th>Option Name</th>
+            <th>True/False</th>    
+            <th>Yes/No Value</th>  
+            <th>Numeric?</th>
+            <th>Number Value</th>  
+            <th>Other Value</th>     
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let items of SetupInformationList">
+            <td readonly>{{ items.GroupOption }}</td>
+            <td readonly>{{ items.SubOption }}</td>
+            <td readonly>{{ items.OptionName }}</td>
+            <td readonly>{{ items.IsBoolean }}</td>
+            <td contenteditable="true" >{{ items.BooleanValue }}</td>   
+            <td readonly>{{ items.IsNumber }}</td>     
+            <td contenteditable="true" >{{ items.NumberValue }}</td>
+            <td contenteditable="true" >{{ items.TextValue }}</td>      
+  
+            <td>
+              <a
+                style="color: blue"
+                class="btn btn-light btn-sm"
+                (click)="openForEdit(items.OptionId)"
+              >
+                <i class="fas fa-pen"></i></a
+              >&nbsp;&nbsp;&nbsp;
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

@@ -1,0 +1,78 @@
+<div class="container-fluid">
+    <!-- start page title -->
+    <!-- start page title -->
+    <div class="row">
+      <div class="col-12">
+        <div
+          class="page-title-box d-sm-flex align-items-center justify-content-between"
+        >
+          <h4 class="mb-sm-0 font-size-18">Fixed Deposits List</h4>
+  
+          <div class="page-title-right">
+            <ol class="breadcrumb m-0">
+              <li class="breadcrumb-item">Fixed Deposits</li>
+              <li class="breadcrumb-item active">
+                <a href="javascript: void(0);" routerLink="/FixedDeposit"
+                  >Add Fixed Deposit</a
+                >
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end page title -->
+    <div style="background-color: white; padding: 10px">
+      <div *ngIf="isNodeLoading">
+       
+        <div style="color: red; font-size: 14px" class="animate">
+          <i
+          class="bx bx-loader bx-spin font-size-16 align-middle me-2"
+          style="color: red"
+        ></i>
+          Please wait...
+        </div>
+      </div>
+      <table
+        datatable
+        class="table table-bordered"
+        *ngIf="this.temp"
+        style="font-size: 12px"
+      >
+        <thead>
+          <tr>
+            <th>Application Date</th>
+                        <th>Amount</th>
+                        <th>Days</th>
+                        <th>Interest Rate</th>
+                        <th>Interest Amount</th>
+                        <th>WithHold Tax</th>
+                        <th>WithHold Tax Amount</th>
+                        <th>Maturity Date</th>
+                        <th>Amount On Maturity</th>
+                        <th>Status</th>                                                                    
+                        <th style="width:10%">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let items of this.FixedDepositList">
+
+            <td>{{items.ApplicationDate}}</td>
+            <td>{{items.AmountToFix}}</td>
+            <td>{{items.NoOfDays}}</td>
+            <td>{{items.InterestRate}}</td>
+            <td>{{items.InterestAmount}}</td>
+            <td>{{items.WithHoldTax}}</td>
+            <td>{{items.WithHoldTaxAmount}}</td>
+            <td>{{items.MaturityDate}}</td>
+            <td>{{items.AmountOnMaturity}}</td>            
+            <td>{{items.Status}}</td>                       
+            <td><button (click)="onEditFixedDeposits(items.FixedDepositId)" style="color: blue;" class="btn btn-sm btn-light"><i class="fas fa-pen"></i></button> 
+              <button (click)="onDeleteFixedDeposits(items.FixedDepositId)" style="color: red;"  class="btn btn-sm btn-light ml-1"><i class="fas fa-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

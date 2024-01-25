@@ -1,0 +1,83 @@
+<div class="container-fluid">
+  <!-- start page title -->
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div
+        class="page-title-box d-sm-flex align-items-center justify-content-between"
+      >
+        <h4 class="mb-sm-0 font-size-18">Structure</h4>
+
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">Member settings</li>
+            <li class="breadcrumb-item active" routerLink="/structure">
+              <a href="javascript: void(0);">Create structure</a>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+  <div style="background-color: white; padding: 10px">
+    <div *ngIf="isNodeLoading">
+      <p>
+        <i
+          class="bx bx-loader bx-spin font-size-16 align-middle me-2"
+          style="color: red"
+        ></i>
+        <span style="color: red; font-size: 14px" class="animate">
+          Please wait...</span
+        >
+      </p>
+    </div>
+
+    <table
+      datatable
+      class="table table-bordered"
+      style="font-size: 12px"
+      *ngIf="this.temp"
+    >
+      <thead>
+        <tr>
+          <th>Caption</th>
+          <th>Description</th>
+          <th>Remarks</th>
+          <th>Action</th>
+          <th>Add Child</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let items of this.structurelist">
+          <td>{{ items.Caption }}</td>
+          <td>{{ items.Description }}</td>
+          <td>{{ items.Remarks }}</td>
+          <td>
+            <a
+              class="btn btn-light btn-sm"
+              style="color: blue"
+              (click)="PassStructureId(items.StructureId)"
+            >
+              <i class="fas fa-pen"></i></a
+            >&nbsp; &nbsp;
+            <a
+              class="btn btn-light btn-sm ml-1"
+              style="color: red"
+              (click)="onDeleteStructureId(items.StructureId)"
+            >
+              <i class="fa fa-trash"></i
+            ></a>
+          </td>
+          <td>
+            <a
+              class="btn btn-primary btn-sm"
+              (click)="AddPassStructure(items.StructureId, items.Description)"
+              ><i class="fa fa-plus-square"></i>Add</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

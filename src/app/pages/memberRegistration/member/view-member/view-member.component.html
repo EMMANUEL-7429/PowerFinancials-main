@@ -1,0 +1,116 @@
+<div class="container-fluid">
+  <!-- start page title -->
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div
+        class="page-title-box d-sm-flex align-items-center justify-content-between"
+      >
+        <h4 class="mb-sm-0 font-size-18">Member List</h4>
+
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">Member</li>
+            <li class="breadcrumb-item active">
+              <a href="javascript: void(0);" routerLink="/member">Add Member</a>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+  <div style="background-color: white; padding: 20px">
+    <div *ngIf="isNodeLoading">
+      <p>
+        <i
+          class="bx bx-loader bx-spin font-size-16 align-middle me-2"
+          style="color: red"
+        ></i>
+        <span style="color: red; font-size: 14px" class="animate">
+          Please wait...</span
+        >
+      </p>
+    </div>
+    <div class="table-responsive">
+      <table
+        datatable
+        class="table table-bordered"
+        *ngIf="this.temp"
+        style="font-size: 12px"
+      >
+        <thead>
+          <tr>
+            <th class="headcol">Member No.</th>
+            <th>Full Name</th>
+            <th>Registration Date</th>
+            <th>Phone Number</th>
+            <th>Member Status</th>
+
+            <th>Hierarchy/Group</th>
+            <th>&nbsp;&nbsp;Action&nbsp;&nbsp;</th>
+            <th>&nbsp;&nbsp;Contact Person&nbsp;&nbsp;</th>
+            <th>&nbsp;&nbsp;Next Of kin &nbsp;&nbsp;</th>
+            <th>&nbsp;&nbsp;Beneficiary &nbsp;&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let items of memberList">
+            <td
+              style="color: blue; font-size: 14px; text-decoration-style: bold"
+            >
+              {{ items.MemberNo }}
+            </td>
+            <td>{{ items.FullName }}</td>
+            <td>{{ items.RegistrationDate | date: "d-MMM-y" }}</td>
+            <td>{{ items.PhoneNo }}</td>
+            <td>{{ getMemberStatus(items.MemberStatusId) }}</td>
+            <td>{{ getMemberHierarchy(items.HierarchyId) }}</td>
+            <td>
+              <a
+                class="btn btn-light btn-sm"
+                (click)="openForEditMember(items.MemberId)"
+                style="color: blue"
+              >
+                <i class="fas fa-pen"></i
+              ></a>
+              <a
+                class="btn btn-light btn-sm ml-1"
+                (click)="DeleteMember(items.MemberId)"
+                style="color: red"
+              >
+                <i class="fa fa-trash"></i
+              ></a>
+            </td>
+            <td>
+              <!-- <a  class="btn btn-outline-info  ml-1" (click)="GetIdForContantPerson(items.MemberId)" > <i class="fa fa-plus-square"></i>Person </a>-->
+              <a
+                class="btn btn-outline-info btn-sm ml-1"
+                (click)="GetIdForContantPerson(items.MemberId)"
+              >
+                <i class="dripicons-view-list"></i>&nbsp;View</a
+              >
+            </td>
+            <td>
+              <a
+                class="btn btn-outline-success btn-sm ml-1"
+                (click)="GetIdForNextKin(items.MemberId)"
+              >
+                <i class="dripicons-view-list"></i>&nbsp;View</a
+              >
+            </td>
+            <td>
+              <a
+                class="btn btn-outline-primary btn-sm ml-1"
+                (click)="GetIdForBeneficiary(items.MemberId)"
+              >
+                <i class="dripicons-view-list"></i>&nbsp;View</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

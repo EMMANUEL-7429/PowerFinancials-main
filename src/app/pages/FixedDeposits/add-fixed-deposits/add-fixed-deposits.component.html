@@ -1,0 +1,372 @@
+<div class="container-fluid">
+  <!-- start page title -->
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div
+        class="page-title-box d-sm-flex align-items-center justify-content-between"
+      >
+        <h4 class="mb-sm-0 font-size-18">Fixed Deposits</h4>
+
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">Fixed Deposit Settings</li>
+            <li class="breadcrumb-item active">
+              <a href="javascript: void(0);" routerLink="/ViewFixedDeposit"
+                >View list</a
+              >
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+  <div style="background-color: white; padding: 20px">
+    <div style="background-color: white; padding: 1%; padding-bottom: 4%">
+      <div
+        *ngIf="isDisconnected == true"
+        class="alert alert-light"
+        style="height: 1%"
+      >
+        <!--connection status starts here-->
+        <label text-wrap
+          ><i class="fa fa-wifi" aria-hidden="true"></i>Please check your
+          connection and try again
+          <button class="btn btn-primary" (click)="Reload()">
+            <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Refresh
+          </button></label
+        >
+      </div>
+      <div class="loader-inner ball-clip-rotate" *ngIf="isValid == false">
+        <div class="btn btn-danger">
+          <i class="fa fa-exclamation-triangle"></i> Please fill required Fields
+        </div>
+      </div> 
+      <!--form
+        #form="ngForm"
+        *ngIf="fdservice.FixedDepositForm"
+        (submit)="onSubmit(form)"
+        autocomplete="off"
+      -->  
+      
+        <div class="row">
+          <div class="col-md-3">
+            <label for="">Product<strong style="color: red">*</strong></label>
+            <select class="form-select" name="ProductId" [(ngModel)]="ProductId">
+              <option value="1">MEMBER ACCOUNT</option>
+              <option value="2">PLACEMENTS</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label>Member No<strong style="color: red">*</strong></label>
+            <div class="input-group">
+              <select
+                class="form-select"
+                style="background-color: white"
+                name="MemberId"
+
+                [(ngModel)]="MemberId"
+                (change)="updateMemberDetails($event.target)"
+                
+              >
+                <option value="0">Select</option>
+                <option
+                  *ngFor="let items of MemberList"
+                  value="{{ items.MemberId }}"
+                >
+                {{ items.MemberNo }}-{{ items.FullName }}
+              </option>
+              </select>
+              <!--div class="input-group-append">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      (click)="openForSeachMember(null)"
+                    >
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </div-->
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <label>Full Name</label>
+            <input
+              readonly
+              type="text"
+              name="FullName"
+              [(ngModel)]="FullName"
+              class="form-control"
+            />
+          </div>
+          <div class="col-sm-3">
+            <label >Id No</label> 
+            <div class="input-group">             
+            <input class="form-control" name="IdNo" readonly [(ngModel)]="IdNo">&nbsp;                          
+            <div class="input-group-append">
+          <button type="button" class="btn btn-danger"  (click)="openForSeachMember(null)">
+              <i class="fa fa-search"></i>
+          </button>
+        </div>
+      </div> 
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <label>Application Date</label>
+            <input
+              type="Date"              
+              name="AplicationDate"
+              class="form-control"
+              [(ngModel)]="ApplicationDate"              
+            />
+          </div>
+          <div class="col-md-4">
+            <label>Amount</label>
+            <input
+              type="text"
+              class="form-control"
+              style="background-color: white"
+              name="AmountToFix"
+              [(ngModel)]="AmountToFix"(keyup)="updateInterestAmount(); updateWithHoldTaxAmount() ; updateAmountOnMaturity(); udateLocalCurrenyAmount()" 
+               /> 
+            
+            </div>
+          <div class="col-md-4">
+            <label>No Of Days</label>
+            <input
+              class="form-control"
+              name="NoOfDays"             
+              [(ngModel)]="NoOfDays" (keyup)="updateInterestAmount(); updateWithHoldTaxAmount() ; updateAmountOnMaturity();updateMaturityDate()"
+              required
+              
+            />
+          </div>
+        </div>
+          <br />
+          <div class="row">
+            <div class="col-md-4">
+              <label>Interest Rate</label>
+              <input
+                class="form-control"
+                name="InterestRate"
+                [(ngModel)]="InterestRate"(keyup)="updateInterestAmount(); updateWithHoldTaxAmount();updateAmountOnMaturity()"
+                required
+               
+                 
+
+              />
+            </div>
+            <div class="col-md-4">
+              <label>Interest Amount</label>
+              <input
+                readonly
+                class="form-control"
+                name="Amount"
+                [(ngModel)]="InterestAmount"(keyup)="updateWithHoldTaxAmount() ; updateAmountOnMaturity()"
+                
+              />
+            </div>
+            <div class="col-md-4">
+              <label>WithHold Tax</label>
+              <input
+                class="form-control"
+                name="WithHoldTax"
+                [(ngModel)]="WithHoldTax"(keyup)="updateInterestAmount() ; updateWithHoldTaxAmount() ; updateAmountOnMaturity()"
+                
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label>WithHold Tax Amount</label>
+              <input
+                readonly
+                class="form-control"
+                name="WithHoldTaxAmount"
+                [(ngModel)]="WithHoldTaxAmount"(keyup)="updateAmountOnMaturity()"
+               
+              />
+            </div>
+            <div class="col-md-4">
+              <label>Amount On Maturity</label>
+              <input
+                readonly
+                class="form-control"
+                name="AmountOnMaturity"
+                [(ngModel)]="AmountOnMaturity" 
+                
+              />
+            </div>
+            <div class="col-md-4">
+              <label>FD GL Account</label>
+              <input
+                class="form-control"
+                name="FixedDepositGLAccount"
+                
+                [(ngModel)]="FixedDepositGLAccount"
+                
+              />
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-4">
+              <label for="">Status</label>
+              <select class="form-select" name="Status" [(ngModel)]="Status">
+                <option value="0">Active</option>
+                <option value="1">Closed</option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label for="">Action on Maturity</label>
+              <select class="form-select" name="ActionOnMaturity" [(ngModel)]="ActionOnMaturity" >
+                <option value="1">PAY MATURITY AMOUNT</option>
+                <option value="2">ROLL OVER PRINCIPAL</option>
+                <option value="3">ROLL OVER MATURITY AMOUNT</option>
+                <option></option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label>Maturity Date</label>
+              <input
+                type="Date"
+                class="form-control"
+                name="MaturityDate"
+                [(ngModel)]="MaturityDate"
+                displayFormat="DD MM YYYY"
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <label>Pay Mode</label>
+              <select class="form-select" name="ModeOfPaymentID" [(ngModel)]="ModeOfPaymentID">
+                <option value="0">-Select-</option>
+                <option value="1">CHEQUE</option>
+                <option value="2">MPESA</option>
+                <option value="3">CASH</option>
+                <option value="4">TRANSFER</option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label>Bank</label>
+              <select
+                style="background-color: white"
+                class="form-select"
+                name="BankId"               
+                [(ngModel)]="BankId"
+              >
+                <option value="0">-Select</option>
+                <option
+                  *ngFor="let items of BankList"
+                  value="{{ items.BankId }}"
+                >
+                  {{ items.BankName }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label>Cheque Number</label>
+              <input
+                class="form-control"
+                name="ChequeNumber"                     
+                [(ngModel)]="ChequeNumber"
+                required
+                
+              />
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-sm-4">
+              <label>Currency<strong style="color: red">*</strong> </label>
+              <select
+                class="form-select"
+                style="background-color: white"
+                name="CurrencyId"
+                [(ngModel)]="CurrencyId"                
+                
+              >
+                <!--option *ngFor="let items of DefaultCurrencyLists" value="0">
+                  {{ items.CurrencyName }}
+                </option-->
+                <option
+                  *ngFor="let items of CurrencyList"
+                  value="{{ items.CurrencyId }}"
+                >
+                  {{ items.CurrencyName }}
+                </option>
+              </select>
+            </div>
+            <div class="col-sm-4">
+              <label>Local Currency Amount </label>
+              <input
+                type="text"
+                class="form-control"
+                readonly                
+                name="LocalCurrencyAmount"
+                [(ngModel)]="LocalCurrencyAmount"
+              />
+            </div>                 
+          
+        </div>
+        <br />          
+        <div class="row">          
+          <div class="col-md-4">
+            <input type="checkbox"  [(ngModel)]="MatureEveryEndOfMonth"(click)="NoOfDays=26"/> 
+            <label for="">Mature End Of The Month</label>
+          </div>           
+        </div>
+          <br />
+          <div class="row">
+            <div class="col-md-12">
+              <button
+                type="submit"  *ngIf="!loading"
+                (click)="
+                  onSubmit( ApplicationDate,
+                  MemberId, 
+                  IdNo,       
+                  TrxBranchId,
+                  EtxBranchId,
+                  ProductId,
+                  Description,
+                  MemberShareId,
+                  BankId,
+                  AmountToFix,
+                  ModeOfPaymentID,
+                  NoOfDays,
+                  InterestRate,
+                  InterestAmount,
+                  AmountOnMaturity,
+                  FixedDepositGLAccount,
+                  WithHoldTax,
+                  WithHoldTaxAmount,
+                  CurrencyId,
+                  LocalCurrencyAmount,
+                  Status,
+                  ActionOnMaturity,
+                  MaturityDate,
+                  ChequeNumber,
+                  ProductOnMaturity,
+                  MatureEveryEndOfMonth,
+                  ClosedBy,
+                  ClosedOn,
+                  CreatedBy                 
+                 )"
+                class="btn btn-primary"
+              >
+                <i class="fa fa-database"></i> Submit
+                
+              </button>
+            </div>
+            <div id="sa-success" *ngIf="loading" (click)="successmsg()"></div>
+          </div> 
+                      
+    </div>
+  </div>
+</div>

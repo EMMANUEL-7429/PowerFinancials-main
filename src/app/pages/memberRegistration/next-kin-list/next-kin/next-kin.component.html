@@ -1,0 +1,116 @@
+<div class="container-fluid">
+    <!-- start page title -->
+    <!-- start page title -->
+  
+    
+  
+    <div class="row">
+      <div class="col-12">
+        <div
+          class="page-title-box d-sm-flex align-items-center justify-content-between"
+        >
+          <h4 class="mb-sm-0 font-size-18">Next of Kin</h4>
+  
+          <div class="page-title-right">
+            <ol class="breadcrumb m-0">
+              <li class="breadcrumb-item">Member</li>
+              <li class="breadcrumb-item active">
+                <a
+                  href="javascript: void(0);"
+                  (click)="passIdToInsert()"
+                  >View list</a
+                >
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end page title -->
+    <div style="background-color: white; padding: 20px">
+      <div style="background-color: white; padding: 1%; padding-bottom: 4%">
+        <div
+          *ngIf="isDisconnected == true"
+          class="alert alert-light"
+          style="height: 1%"
+        >
+          <!--connection status starts here-->
+          <label text-wrap
+            ><i class="fa fa-wifi" aria-hidden="true"></i>Please check your
+            connection and try again
+            <button class="btn btn-primary" (click)="Reload()">
+              <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Refresh
+            </button></label
+          >
+        </div>
+        <div class="loader-inner ball-clip-rotate" *ngIf="isValid == false">
+          <div style="color: white; background-color: rosybrown; padding: 10px">
+            Please fill required Field
+          </div>
+        </div>
+  
+        <input type="hidden" class="form-control" [(ngModel)]="MemberId">
+ <div class="row">
+    <div class="col-md-4">
+        <label >Full Name</label>
+        <input  class="form-control" [(ngModel)]="FullName"
+        [class.is-invalid]="!isValid && FullName==''">
+    </div>
+    <div class="col-md-4">
+        <label >Phone Number</label>
+        <input  class="form-control" [(ngModel)]="PhoneNumber"
+        [class.is-invalid]="!isValid && PhoneNumber==''">
+    </div>
+    <div class="col-md-4">
+        <label >Relation</label>
+        <select  class="form-control" [(ngModel)]="RelationId"
+        [class.is-invalid]="!isValid && RelationId==0">
+            <option value="0">-Select</option>
+            <option *ngFor="let items of RelationList" value="{{items.RelationId}}">{{items.RelationName}}</option>
+        </select>
+    </div>
+ </div>
+ <div class="row">
+    <div class="col-md-6">
+        <label >Address</label>
+        <input  class="form-control" [(ngModel)]="Address"
+        [class.is-invalid]="!isValid && Address==''">
+    </div>
+    <div class="col-md-6">
+        <label >Town</label>
+        <input  class="form-control" [(ngModel)]="Town"
+        [class.is-invalid]="!isValid && Town==''">
+    </div>
+ </div>
+ <div class="row">
+    <div class="col-md-6">
+        <label >Date of Birth</label>
+        <input type="date" displayFormat="DD MM YYYY" [(ngModel)]="DOB" class="form-control">
+    </div>
+    <div class="col-md-6">
+        <label >Id Number</label>
+        <input  class="form-control" [(ngModel)]="IdNo" 
+        [class.is-invalid]="!isValid && IdNo==''">
+    </div>
+   
+ </div>
+ <div class="row">
+     <div class="col-md-12">
+        <label >Remarks</label>
+        <textarea rows="3" class="form-control" [(ngModel)]="Remarks" placeholder="Enter your Remark/Comment">
+        </textarea>
+     </div>
+ </div>
+ <br>
+    <div class="row">
+        <div class="col-md-12">
+            <button type="submit" *ngIf="!loading"  (click)="onSubmit(MemberId,RelationId,FullName,Address,PhoneNumber,Town,DOB,IdNo,Remarks)" class=" btn btn-primary " ><i class="fa fa-database"></i> Submit<i class="fa fa-spinner fa-spin" *ngIf="loading"></i> </button>
+           
+            <div id="sa-success" *ngIf="loading" (click)="successmsg()"></div> 
+        </div>
+    </div>
+      </div>
+    </div>
+  </div>
+  
+  

@@ -1,0 +1,37 @@
+export class AccountTransaction {
+  AccountTransactionId: any;
+  TransDate: any;
+  Description:any;
+  ValueDate: any;
+  MemberNo: number;
+  IdNo: any;
+  DocumentNo: any;
+  ProductId: number;
+  ModeOfPaymentID: any;
+  TransType: any;
+  BaseCurrencyId: any;
+  CurrencyId: any;
+  CurrencySymbol: any;
+  ExchangeRate: any;
+  Commission: any;
+  PaidBy: any;
+  LocalCurrencyAmount: any;
+  Amount: any;
+  AmountCharge: any;
+  BalanceAmount: any;
+  Remarks: any;
+  BuyRate: any;
+  CreatedOn: any;
+  CreatedBy: any;
+  ModifiedOn: any;
+  ModifiedBy: any;
+  DeleteTransactionsIds: any;
+  MemberId: any;
+  ChargeWithdrawal: any;
+  CanBeOverdrawn: any;
+  ConvertedAmount: any;
+  IsBlocked: any;
+  TotalBalanceAmount: any;
+  AccountNumber: any;
+  MemberShareId: any;
+}

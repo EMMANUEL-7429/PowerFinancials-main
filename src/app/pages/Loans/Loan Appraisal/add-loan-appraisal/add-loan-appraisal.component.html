@@ -1,0 +1,147 @@
+<div class="container-fluid">
+    <!-- start page title -->
+    <!-- start page title -->
+  
+    
+  
+    <div class="row">
+      <div class="col-12">
+        <div
+          class="page-title-box d-sm-flex align-items-center justify-content-between"
+        >
+          <h4 class="mb-sm-0 font-size-18">Loan Approval</h4>
+  
+          <div class="page-title-right">
+            <ol class="breadcrumb m-0">
+              <li class="breadcrumb-item">Loan</li>
+              <li class="breadcrumb-item active">
+                <a
+                  href="javascript: void(0);"
+                  routerLink="/loan-Appraisals-list"
+                  >View list</a
+                >
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end page title -->
+    <div style="background-color: white; padding: 20px">
+      <div style="background-color: white; padding: 1%; padding-bottom: 4%">
+        <div
+          *ngIf="isDisconnected == true"
+          class="alert alert-light"
+          style="height: 1%"
+        >
+          <!--connection status starts here-->
+          <label text-wrap
+            ><i class="fa fa-wifi" aria-hidden="true"></i>Please check your
+            connection and try again
+            <button class="btn btn-primary" (click)="Reload()">
+              <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Refresh
+            </button></label
+          >
+        </div>
+    <div class="row">
+      <div class="col-sm-10">
+        <div class="row">
+        <div class="col-sm-4">
+        <label>Member No.</label>
+        <input class="form-control" [(ngModel)]="MemberNo" readonly>
+        </div>
+        <div class="col-sm-4">
+        <label>Full Name</label>
+        <input class="form-control" [(ngModel)]="FullName" readonly >
+        </div>
+        <div class="col-sm-4">
+        <label>Id No</label>
+        <input class="form-control" [(ngModel)]="IdNo" readonly>
+        </div>
+        </div>
+        <hr>
+        <div class="row">
+        <div class="col-sm-4">
+        <label>Loan Code</label>
+        <input class="form-control" [(ngModel)]="LoanCode" readonly>
+        </div>
+        <div class="col-sm-4">
+        <label>Loan Amount</label>
+        <div class="input-group">
+        <input class="form-control" [(ngModel)]="LoanAmount" readonly>
+        </div>
+        </div>
+        <div class="col-sm-4">
+      <label>Loan Type</label>
+            <select class="form-control"  [(ngModel)]="LoanTypeId"  
+           readonly >
+            <option value="0">-Select</option>
+            <option *ngFor="let items of LoanTypeList" value="{{items.LoanTypeId}}">{{items.Description}}</option>
+            </select>
+        </div>
+        </div>
+          <div class="row">
+           <div class="col-sm-4">
+        <label>Period Frequency</label>
+        <div class="input-group"> 
+        <input class="form-control" [(ngModel)]="PeriodFrequency" readonly>
+        </div>
+        </div>
+          <div class="col-sm-4">
+        <label>Repay Pariod</label>
+        <div class="input-group"> 
+        <input class="form-control" [(ngModel)]="RepayPeriod" readonly>
+        </div>
+          </div>
+          <div class="col-sm-4">
+        <label>Interest Rate</label>
+        <div class="input-group"> 
+        <input class="form-control" [(ngModel)]="InterestRate" readonly>
+        </div>
+          </div>
+          </div>
+          <hr>
+    
+        <div class="row">
+        <div class="col-sm-4">
+        <label>Application Date</label>
+        <div style="border:1px solid lightgrey;font-size:16px;border-radius:5px;padding:8px">
+        {{ApplicationDate| date: 'd-MMM-y'}}
+        </div>
+        </div>
+         <div class="col-sm-4">
+        <label>Status Date</label>
+        <div class="input-group">
+        <input type="date" class="form-control" [(ngModel)]="StatusDate">
+        </div>
+        </div>
+    </div>
+    </div>
+        <div class="col-sm-2">
+        <h4 style="text-align:center;color:green">Loan Appraised</h4>
+         <div class="row">
+            <div class="col-sm-12">
+             <img src="assets/img/F1.jpg"  style="height:100%;width:100%">
+              </div>
+            </div>
+            <br>
+            
+            
+             <div class="row">
+            <div class="col-sm-12">
+                     <button routerLink="/loan-application-list"  class="btn btn-warning btn-sm btn-block"><i class="fa fa-table"></i>&nbsp;Loan Applications</button>
+              </div>
+            </div>
+            <br>
+      </div>
+       
+    </div>
+    <br>
+    <div class="row">
+    <div class="col-sm-12">
+    <button  type="submit" class="btn btn-block btn-primary" (click)="onSubmit(StatusDate)"><i class="fa fa-check-circle"></i>Appraised Loan <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+    </div>
+    </div>
+    </div>
+    </div>
+</div>

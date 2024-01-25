@@ -1,0 +1,38 @@
+<p style="text-align:right;margin-top:2.5%">
+    <button type="button" class=" btn btn-outline-danger btn-sm" [mat-dialog-close] ><STrong>X</STrong></button>
+</p>
+<div class="loader-inner ball-clip-rotate" *ngIf="isNodeLoading">
+    <div style="color:red;font-size: 14px;" class="animate"> Please wait Data is loading.....</div>
+ </div>
+<div class="table-responsive">
+
+    <table datatable class="table  table-bordered " *ngIf="this.temp"  style="font-size:11px" >
+      <thead>
+        <tr>
+          <th class="headcol">MemberNo</th>
+          <th>Full Name</th>
+          <th>Registration Date</th>
+          <th>PhoneNo</th>
+          <th>Member Status</th>
+           <th>Id No</th>     
+          <th>Hierarchy/Group</th> 
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let items of memberList">
+          <td (click)="AddPassMemberDetails(items.MemberId)" >{{items.MemberNo}}</td>
+          <td (click)="AddPassMemberDetails(items.MemberId)">{{items.FullName}}</td>
+          <td (click)="AddPassMemberDetails(items.MemberId)">{{items.RegistrationDate|date: 'd-MMM-y'}}</td>
+          <td (click)="AddPassMemberDetails(items.MemberId)">{{items.PhoneNo}}</td>
+          <td (click)="AddPassMemberDetails(items.MemberId)">{{getMemberStatus(items.MemberStatusId)}}</td>
+          <td (click)="AddPassMemberDetails(items.MemberId)">{{items.IdNo}}</td>
+          <td (click)="AddPassMemberDetails(items.MemberId)">{{getMemberHierarchy(items.HierarchyId)}}</td>
+         
+        </tr>
+      </tbody>
+    </table>
+   
+</div>
+
+
+

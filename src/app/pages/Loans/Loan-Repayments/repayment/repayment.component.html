@@ -1,0 +1,155 @@
+<mat-card>
+    <div *ngIf="isDisconnected==true" class="alert alert-light">
+      <!--connection status starts here-->
+  <div>
+    <label>No Internet Connection</label>
+  </div>
+  <hr>
+  <div class="circle_Connection"><i class="fa fa-wifi" aria-hidden="true"></i>
+     <i class="fa fa-times-circle" class="smallIcon" aria-hidden="true"></i>
+  </div>
+  <br>
+  <label text-wrap>Please check your connection and try again</label>
+  <hr>
+  <div class="card-text">
+    <button class="btn btn-block btn-primary" (click)="Reload()"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Refresh</button>
+  </div> 
+  </div>
+  <br>
+      <div class="row">
+      <div class="col-sm-3">
+        <label>Full Name</label>
+        <input  readonly type="text" name="FullName" [(ngModel)]="FullName" class="form-control" >
+        </div>
+        <div class="col-sm-3">
+        <label>Id No</label>
+        <input readonly type="text" name="IdNo" [(ngModel)]="IdNo" class="form-control" >
+        </div>         
+       
+        <div class="col-md-3">
+          <label>Loan Amount</label>
+          <input type="text" class="form-control"  [(ngModel)]="LoanAmount" readonly>
+        </div>
+        <div class="col-md-3">
+          <label>Repayed Amount</label>
+          <input type="text" class="form-control"  [(ngModel)]="RepayedAmount" readonly >
+       </div>
+      </div> 
+    <hr>
+  
+   <div class="row">
+      <div class="col-md-4" hidden>
+        <label>Trans Type<strong style="color:red">*</strong></label>
+        <select  class="form-control" style="background-color: white;" [(ngModel)]="TransType"
+        [class.is-invalid]="!isValid && TransType==0" >
+        <option value="0">-select</option>
+        <option value="10">Principal</option>
+        <option value="20">Interest</option>
+        <option value="30">Penalty</option>
+        <option value="40">Other Charges</option>      
+        </select>
+      </div>    
+      <div class="col-md-3" hidden>
+        <label>Serial</label>
+        <input  class="form-control" style="background-color: white;" [(ngModel)]="SerialId" >
+      </div>
+      <div class="col-md-3" hidden>
+        <label>Repayment Number</label>
+        <input class="form-control" style="background-color: white;" [(ngModel)]="RepaymentNo">
+      </div> 
+      
+     <div class="col-md-3" hidden>
+      <label>Loan Balance</label>
+      <input  class="form-control" style="background-color: white;" [(ngModel)]="LoanBalance"  >
+   </div>
+   
+   </div>
+   <br>
+   <div class="row">
+     <div class="col-sm-3">
+     <label>Currency<strong style="color:red">*</strong></label>
+     <select class="form-control" style="background-color: white;" [(ngModel)]="CurrencyId"  (change)="convertCurrency(CurrencyId)" (change)="updateCurrencyDetails($event.target)"
+     [class.is-invalid]="!isValid && CurrencyId==0">
+     <option *ngFor="let items of DefaultCurrencyLists" value="0">{{items.CurrencyName}}</option> 
+     <option *ngFor="let items of CurrencyList" value="{{items.CurrencyId}}">{{items.CurrencyName}}</option>
+     </select>
+     </div>   
+     <div class="col-sm-3" >        
+     <label>Exchange Rate </label>
+     <input type="text"  class="form-control" style="background-color: white;"   [(ngModel)]="ExchangeRate" readonly>
+     </div>
+     <div class="col-sm-3" hidden>
+     <label>Base Currency </label>
+     <input type="text"   class="form-control" style="background-color: white;"   [(ngModel)]="BaseCurrencyId" >
+     </div>
+     <div class="col-md-3">
+     <label>Amount <strong style="color:red">*</strong> </label>
+     <input type="text" class="form-control" style="background-color: white;" [(ngModel)]="ForeignAmount" (keyup)=updateAmount()
+     [class.is-invalid]="!isValid && ForeignAmount==0">
+     </div>
+     <div class="col-md-3" >
+     <label>Local Currency Amount </label>
+     <input type="text" class="form-control"  [(ngModel)]="Amount" readonly>
+     </div>  
+     <div class="col-md-3" hidden>
+      <label> Amount1 </label>
+      <input type="text" class="form-control" style="background-color: white;" [(ngModel)]="Amount1"  >
+      </div>   
+     </div> 
+   <br>
+    <br>
+   <div class="row">
+     <div class="col-sm-3">
+        <label>Mode Of Payment<strong style="color:red">*</strong></label>
+        <select class="form-control" style="background-color: white;"   [(ngModel)]="PaymentMode"
+        [class.is-invalid]="!isValid && PaymentMode==''" >      
+        <option *ngFor="let items of PayModeList" value="{{items.PaymentModeId}}">{{items.Description}}</option>
+        </select>
+        </div>
+       <div class="col-md-3">
+        <label>Bank</label>
+        <select type="text"  style="background-color: white;" class="form-control"  [(ngModel)]="BankId" >      
+        <option *ngFor="let items of BankList" value="{{items.BankId}}">{{items.BankName}}</option>
+        </select>
+       </div>
+       <div class="col-md-3">
+        <label>Paid By</label>
+        <input class="form-control"  [(ngModel)]="PaidBy"> 
+     </div>
+     <div class="col-md-3">
+        <label>Remarks</label>
+        <input type="text" class="form-control"  [(ngModel)]="Remarks">
+     </div>
+   </div>
+   <br> 
+  <div class="row">     
+     <div class="col-md-3">
+      <label>Document Number</label>
+      <input  class="form-control" style="background-color: white;" [(ngModel)]="DocumentNo">
+    </div>
+    <div class="col-md-3">
+            <label>Voucher Number<strong style="color:red">*</strong></label>
+            <input class="form-control" style="background-color: white;" [(ngModel)]="VoucherNo" 
+            [class.is-invalid]="!isValid && VoucherNo==''">
+         </div>    
+    <div class="col-md-3">
+      <label>Transaction Date</label>
+   <input type="Date" class="form-control" style="background-color: white;"  [(ngModel)]="TransactionDate">
+  </div>
+  <div class="col-md-3">
+     <label>Value Date</label>
+     <input type="Date" class="form-control" style="background-color: white;"  [(ngModel)]="ValueDate">
+  </div>
+  </div>
+   <br>
+   <div class="row">
+     <div class="col-sm-12">
+     <button type="submit" class=" btn btn-info btn-sm"  (click)="OnSubmit(BankId, CurrencyId, SerialId,  BaseCurrencyId,  ExchangeRate,  ForeignAmount,  Amount, RepaymentNo,TransactionDate,  ValueDate,  TransType,  PaymentMode,  VoucherNo,DocumentNo, PaidBy,  Remarks)"><i class="fa fa-database"></i>Submit<i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>&nbsp;
+     <button type="button" class=" btn btn-outline-danger ml-1" [mat-dialog-close] ><STrong>X</STrong> Close</button>
+     <button type="button" class="btn btn-info btn-sm" style="margin-left: 50%;" (click)="ViewBalances(null)"><i class="fa fa-table"></i> View Balances</button>
+    
+    </div>
+     </div>
+
+  </mat-card>
+  

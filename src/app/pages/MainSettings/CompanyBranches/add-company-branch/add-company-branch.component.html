@@ -1,0 +1,149 @@
+<div class="container-fluid">
+    <!-- start page title -->
+    <!-- start page title -->
+    <div class="row">
+      <div class="col-12">
+        <div
+          class="page-title-box d-sm-flex align-items-center justify-content-between"
+        >
+          <h4 class="mb-sm-0 font-size-18">Company Outlets</h4>
+  
+          <div class="page-title-right">
+            <ol class="breadcrumb m-0">
+              <li class="breadcrumb-item">Outlets</li>
+              <li class="breadcrumb-item active">
+                <a href="javascript: void(0);" routerLink="/ViewCompanyBranches"
+                  >View List</a
+                >
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end page title -->
+    <div style="background-color: white; padding: 20px">
+      <div style="background-color: white; padding: 1%; padding-bottom: 4%">
+        <div
+          *ngIf="isDisconnected == true"
+          class="alert alert-light"
+          style="height: 1%"
+        >
+          <!--connection status starts here-->
+          <label text-wrap
+            ><i class="fa fa-wifi" aria-hidden="true"></i>Please check your
+            connection and try again
+            <button class="btn btn-primary" (click)="Reload()">
+              <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Refresh
+            </button></label
+          >
+        </div>
+        <div class="loader-inner ball-clip-rotate" *ngIf="isValid == false">
+          <div style="color: white; background-color: rosybrown; padding: 10px">
+            Please fill required field(s)
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-md-6">
+            <div class="col-sm-12">
+              <label>Outlet Name</label>
+              <div class="input-group">
+                <input
+                  [(ngModel)]="OutletName"
+                  class="form-control"
+                  required
+                  [class.is-invalid]="!isValid && OutletName == ''"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="col-sm-12">
+              <label>Physical Address</label>
+              <div class="input-group">
+                <input [(ngModel)]="PhysicalAddress" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-md-3" style="padding: 10px">
+            <div class="col-sm-12">
+              <label>Prefix</label>
+              <div class="input-group">
+                <input class="form-control"  [(ngModel)]="Prefix" />                
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3" style="padding: 10px">
+            <div class="col-sm-12">
+              <label>Country</label>
+              <div class="input-group">
+                <input class="form-control" [(ngModel)]="Country" />               
+              </div>
+            </div>
+          </div>   
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4" style="padding: 10px">
+                <div class="col-sm-12">
+                  <div class="input-group">
+      
+                    <input type="checkbox" [(ngModel)]="IsActive" />
+                    &nbsp;<label>IsActive</label>           
+      
+                  </div>
+                </div>
+              </div>
+          <div class="col-md-4" style="padding: 10px">
+            <div class="col-sm-12">
+              <div class="input-group">
+                <input type="checkbox" [(ngModel)]="IsHQ" />
+                &nbsp;<label>IsHQ</label>
+              </div>
+            </div>
+          </div>         
+        </div>
+  
+        <div class="row">         
+          <div class="col-md-6" style="padding: 10px">
+            <div class="col-sm-12">
+            <label>Remarks</label>
+              <div class="input-group">
+                <input class="form-control" type="text" [(ngModel)]="Remarks" />
+                &nbsp;
+              </div>
+            </div>
+          </div>
+         
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-12">
+            <button
+              type="submit"  *ngIf="!loading"
+              (click)="
+                onSubmit(OutletName,
+                PhysicalAddress,
+                Prefix,
+                Country,
+                IsActive,
+                IsHQ,
+                Remarks)"
+              class="btn btn-primary"
+            >
+              <i class="fa fa-database"></i> Submit
+              
+            </button>
+          </div>
+          <div id="sa-success" *ngIf="loading" (click)="successmsg()"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  

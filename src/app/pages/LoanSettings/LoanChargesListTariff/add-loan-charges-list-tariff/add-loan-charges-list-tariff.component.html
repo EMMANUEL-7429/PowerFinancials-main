@@ -1,0 +1,56 @@
+
+    <div *ngIf="isDisconnected==true" class="alert alert-light">
+        <!--connection status starts here-->
+    <div>
+      <label>No Internet Connection</label>
+    </div>
+    <hr>
+    <div class="circle_Connection"><i class="fa fa-wifi" aria-hidden="true"></i>
+       <i class="fa fa-times-circle" class="smallIcon" aria-hidden="true"></i>
+    </div>
+    <br>
+    <label text-wrap>Please check your connection and try again</label>
+    <hr>
+    <div class="card-text">
+      <button class="btn btn-block btn-primary" (click)="Reload()"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Refresh</button>
+    </div> 
+</div>
+
+<h3 style="color: blue;">Loan Charge List Tariff</h3>
+
+<mat-card>
+  <label style="visibility:hidden;">{{getLoanChargeName(LoanChargesListId)}}</label>
+  <div class="row" style="margin:2px">
+    <div class="col-sm-6">
+    <label>Loan Charge List Name</label>
+   
+    <input  type="text" [(ngModel)]="LoanChargesListName" class="form-control" style="background-color: white;" disabled>
+    </div>
+            
+    <div class="col-sm-6">
+    <label>From</label>
+    <input  type="text" [(ngModel)]="FromInterval" class="form-control" disabled style="background-color: white;">
+    </div>
+
+              
+</div>
+<div class="row" style="margin:2px">
+
+  <div class="col-sm-6">
+  <label>To</label>
+  <input  type="text" [(ngModel)]="ToInterval" class="form-control" >
+  </div>
+
+  <div class="col-sm-6">
+  <label>Amount</label>
+  <input  type="text" [(ngModel)]="Amount" class="form-control" >
+  </div>
+            
+</div>
+
+</mat-card>
+      <div class="btn-group mr-2" role="group" aria-label="First group" style="margin-top: 10px;">
+        <button type="button" (click)="onSubmit(LoanChargesListId, FromInterval, ToInterval, Amount)" class="btn btn-primary ">Save &nbsp; <i class="fa fa-database"></i></button>&nbsp;&nbsp;
+        <button type="button" class="btn btn-danger  ml-2" (click)="onExit()">Cancel&nbsp;<i class="fas fa-window-close"></i></button>
+      </div>
+      <div id="sa-success" *ngIf="loading" (click)="successmsg()"></div>  

@@ -1,0 +1,154 @@
+<div class="container-fluid">
+  <!-- start page title -->
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div
+        class="page-title-box d-sm-flex align-items-center justify-content-between"
+      >
+        <h4 class="mb-sm-0 font-size-18">Prefix Setting</h4>
+
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">Main Settings</li>
+            <li class="breadcrumb-item active">
+              <a href="javascript: void(0);" routerLink="/view-prefix-settings"
+                >View list</a
+              >
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+  <div style="background-color: white; padding: 20px">
+    <div style="background-color: white; padding: 1%; padding-bottom: 4%">
+      <div
+        *ngIf="isDisconnected == true"
+        class="alert alert-light"
+        style="height: 1%"
+      >
+        <!--connection status starts here-->
+        <label text-wrap
+          ><i class="fa fa-wifi" aria-hidden="true"></i>Please check your
+          connection and try again
+          <button class="btn btn-primary" (click)="Reload()">
+            <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Refresh
+          </button></label
+        >
+      </div>
+      <div class="loader-inner ball-clip-rotate" *ngIf="isValid == false">
+        <div style="color: white; background-color: rosybrown; padding: 10px">
+          Please fill required Field
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="col-sm-12">
+            <label>Prefix Name</label>
+            <div class="input-group">
+              <input
+                [(ngModel)]="PrefixName"
+                class="form-control"
+                required
+                [class.is-invalid]="!isValid && PrefixName == ''"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="col-sm-12">
+            <label>Prefix Text</label>
+            <div class="input-group">
+              <input [(ngModel)]="PrefixText" class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-md-4" style="padding: 10px">
+          <div class="col-sm-12">
+            <div class="input-group">
+              <input type="checkbox" [(ngModel)]="IsSystemAssisted" />
+              &nbsp;<label> System Assisted</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" style="padding: 10px">
+          <div class="col-sm-12">
+            <div class="input-group">
+              <input type="checkbox" [(ngModel)]="IsDateRelated" />
+              &nbsp;<label> Date Related</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" style="padding: 10px">
+          <div class="col-sm-12">
+            <div class="input-group">
+
+              <input type="checkbox" [(ngModel)]="UseBranchPrefix" />
+              &nbsp;<label> Use Branch Prefix</label>            
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="row" *ngIf="IsDateRelated">
+        <div class="col-md-4" style="padding: 10px">
+          <div class="col-sm-12">
+            <div class="input-group">
+              <input type="checkbox" [(ngModel)]="Today" />
+              &nbsp;<label> Day</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" style="padding: 10px">
+          <div class="col-sm-12">
+            <div class="input-group">
+              <input type="checkbox" [(ngModel)]="Month" />
+              &nbsp;<label> Month</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" style="padding: 10px">
+          <div class="col-sm-12">
+            <div class="input-group">
+              <input type="checkbox" [(ngModel)]="Year" />
+              &nbsp;<label> Year</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <div class="row">
+        <div class="col-md-12">
+          <button
+            type="submit"  *ngIf="!loading"
+            (click)="
+              onSubmit(
+                PrefixName,
+                PrefixText,
+                IsSystemAssisted,
+                IsDateRelated,
+                Today,
+                Month,
+                Year,              
+                UseBranchPrefix             
+              )
+            "
+            class="btn btn-primary"
+          >
+            <i class="fa fa-database"></i> Submit
+            
+          </button>
+        </div>
+        <div id="sa-success" *ngIf="loading" (click)="successmsg()"></div>
+      </div>
+    </div>
+  </div>
+</div>

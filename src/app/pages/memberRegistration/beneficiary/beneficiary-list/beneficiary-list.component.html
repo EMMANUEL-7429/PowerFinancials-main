@@ -1,0 +1,69 @@
+
+    
+    <div class="container-fluid">
+
+      <!-- start page title -->
+      <!-- start page title -->
+      <div class="row">
+          <div class="col-12">
+              <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                  <h4 class="mb-sm-0 font-size-18">Beneficiaries</h4>
+
+                  <div class="page-title-right">
+                      <ol class="breadcrumb m-0">
+                          <li class="breadcrumb-item">Member</li>
+                          <li class="breadcrumb-item active"><a href="javascript: void(0);" (click)="addBeneficiary()">Add Beneficiary</a></li>
+                      </ol>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+      <!-- end page title -->
+      <div style="background-color: white;padding: 10px;">
+
+        <div *ngIf="isNodeLoading"> 
+            <p> <i class="bx bx-loader bx-spin font-size-16 align-middle me-2" style="color:red;"></i>
+               <span style="color:red;font-size: 14px;" class="animate"> Please wait...</span>
+             </p>
+            </div>
+       <div class="table-responsive">
+        <table datatable class="table  table-bordered"  *ngIf="this.temp" style="font-size: 12px;">
+      
+            <thead>
+                <tr>
+                    <th>Member No</th>
+                    <th>Relationship</th>
+                    <th>Full Name</th>
+                    <th>Id Number</th>
+                    <th>Date of Birth</th>
+                    <th>Phone Number</th>
+                    <th>Town</th>
+                    <th>Value</th>
+                   
+                    <th style="padding-left: 30px;padding-right: 30px;" > Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let items of this.BeneficiaryList">
+            <td>{{getMemberNo(items.MemberId)}}</td>
+            <td>{{getRelationShip(items.RelationshipId)}}</td>
+            <td>{{items.FullName}}</td>
+            <td>{{items.IdNo}}</td>
+            <td>{{items.DOB| date: 'd-MMM-y'}}</td>
+            <td>{{items.PhoneNumber}}</td>
+            <td>{{items.Town}}</td>
+            <td>{{items.Value}}</td>
+           
+            <td>
+              <a style="color: blue;" class="btn btn-sm btn-light" (click)="onUpdate(items.BeneficiaryId)" ><i class="fas fa-pen"></i></a>&nbsp;&nbsp; &nbsp;
+              <a style="color: red;" class="btn btn-sm btn-light" (click)="onDelete(items.BeneficiaryId)" ><i class="fa fa-trash"></i></a>
+              </td>
+          </tr>    
+      </tbody>
+    
+     
+    </table>
+    </div>
+          </div>
+  </div>

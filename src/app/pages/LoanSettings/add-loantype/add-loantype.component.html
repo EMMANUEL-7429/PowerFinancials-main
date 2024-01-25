@@ -1,0 +1,714 @@
+<div class="container-fluid">
+  <!-- start page title -->
+  <!-- start page title -->
+
+  <div class="row">
+    <div class="col-12">
+      <div
+        class="page-title-box d-sm-flex align-items-center justify-content-between"
+      >
+        <h4 class="mb-sm-0 font-size-18">Loan type</h4>
+
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">Loan</li>
+            <li class="breadcrumb-item active">
+              <a href="javascript: void(0);" routerLink="/loan-type-list"
+                >View list</a
+              >
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+  <div style="background-color: white; padding: 20px">
+    <div style="background-color: white; padding: 1%; padding-bottom: 4%">
+      <div
+        *ngIf="isDisconnected == true"
+        class="alert alert-light"
+        style="height: 1%"
+      >
+        <!--connection status starts here-->
+        <label text-wrap
+          ><i class="fa fa-wifi" aria-hidden="true"></i>Please check your
+          connection and try again
+          <button class="btn btn-primary" (click)="Reload()">
+            <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Refresh
+          </button></label
+        >
+      </div>
+      <div *ngIf="isValid == false">
+        <a class="btn btn-danger" style="color: white">
+          Please fill required Field
+        </a>
+      </div>
+      <mat-tab-group [selectedIndex]="selectedIndex" style="padding-bottom: 2%">
+        <mat-tab label="Details ">
+          <div class="row" style="margin: 2px">
+            <div class="col-sm-3">
+              <label>Ref#/Code:</label>
+              <input
+                type="text"
+                readonly
+                name="RefCode"
+                [(ngModel)]="RefCode"
+                class="form-control"
+              />
+            </div>
+
+            <div class="col-sm-3">
+              <label>Name<strong style="color: red"> *</strong></label>
+              <input
+                type="text"
+                name="Description"
+                [(ngModel)]="Description"
+                class="form-control"
+                [class.is-invalid]="!isValid && Description == ''"
+              />
+            </div>
+
+            <div class="col-sm-3">
+              <label
+                >Maximum Period<strong style="color: red"> *</strong></label
+              >
+              <input
+                type="text"
+                (keyup)="onMaxPerioInput()"
+                name="MaxPeriod"
+                [(ngModel)]="MaxPeriod"
+                class="form-control"
+                [class.is-invalid]="!isValid && MaxPeriod == 0"
+              />
+            </div>
+
+            <div class="col-sm-3">
+              <label>Interest Type<strong style="color: red"> *</strong></label>
+              <select
+                class="form-select"
+                (change)="setMarkupDefault()"
+                style="background-color: white"
+                [(ngModel)]="InterestPayMethod"
+                [class.is-invalid]="!isValid && InterestPayMethod == ''"
+              >
+                <option value="0">select</option>
+                <option value="1">Reducing Balance</option>
+                <option value="2">Reducing Balance Const.</option>
+                <option value="3">Fixed</option>
+                <option value="4">Amortised</option>
+                <option value="5">Markup</option>
+              </select>
+            </div>
+
+          </div>
+          <div class="row" style="margin: 2px">
+            <div class="col-sm-3">
+              <label>Minimum Amount</label>
+              <input type="text" [(ngModel)]="MinAmount" class="form-control" />
+            </div>
+
+            <div class="col-sm-3">
+              <label>Maximum Amount</label>
+              <input type="text" [(ngModel)]="MaxAmount" class="form-control" />
+            </div>
+            <div class="col-sm-3">
+              <label
+                >Repayment Frequency<strong style="color: red">
+                  *</strong
+                ></label
+              >
+              <select
+                class="form-select"
+                style="background-color: white"
+                [(ngModel)]="RepaymentFrequency"
+                [class.is-invalid]="!isValid && RepaymentFrequency == ''"
+              >
+                <option value="0">--select--</option>
+                <option value="1">Daily</option>
+                <option value="2">Weekly</option>
+                <option value="3">Monthly</option>
+                <option value="4">Annually</option>
+                <option value="5">30 Days Cycle</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <label
+                >Interest Posting Frequency<strong style="color: red">
+                  *</strong
+                ></label
+              >
+              <select
+                class="form-select"
+                style="background-color: white"
+                [(ngModel)]="intPostingFrequency"
+                [class.is-invalid]="!isValid && intPostingFrequency ==0"
+              >
+                <option value="0">--select--</option>                
+                <option value="1">Due Date</option>
+                <option value="2">Daily</option>
+                <option value="3">First Day of Month</option>
+                <!--option value="Y">Annually</option-->
+              </select>
+            </div>
+
+          </div>
+
+          <div class="row" style="margin: 2px">
+            <div class="col-sm-3">
+              <label>Penalty Rate:(%)</label>
+              <div class="row no-gutters" style="margin: 2px">
+                <div class="col-sm-4" style="margin-right: 1px">
+                  <input
+                    type="text"
+                    name="Rate"
+                    [(ngModel)]="DefaultPenalty"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-sm-6">
+                  <select
+                    class="form-select"
+                    [(ngModel)]="DefaultPenaltyFrequency"
+                    style="background-color: white"
+                  >
+                    <option value="">--select--</option>
+                    <option value="Daily">Daily</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Annually">Annually</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-3">
+              <label>Interest Rate<strong style="color: red"> *</strong></label>
+              <div class="row no-gutters" style="margin: 2px">
+                <div class="col-sm-4" style="margin-right: 1px">
+                  <input
+                    type="text"
+                    name="Rate"
+                    [(ngModel)]="InterestRate"
+                    class="form-control"
+                    [class.is-invalid]="!isValid && InterestRate == 0"
+                  />
+                </div>
+                <div class="col-sm-6">
+                  <select
+                    class="form-select"
+                    style="background-color: white"
+                    [(ngModel)]="InterestRateFrequency"
+                    [class.is-invalid]="!isValid && InterestRateFrequency == ''"
+                  >
+                    <option value="0">--select--</option>
+                    <option value="1">Daily</option>
+                    <option value="2">Weekly</option>
+                    <option value="3">Monthly</option>
+                    <option value="4">Annually</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-3">
+              <label>Interest Calculation Formula</label>
+              <select
+                class="form-select"
+                style="background-color: white"
+                [(ngModel)]="InterestCalFormula"
+              >
+                <option value="0">--select--</option>
+                <option value="1">(PRT/100)</option>
+                <option value="2">P(T+R+2)/200</option>
+                <option value="3">(P(T+1)R)/200</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <label
+                >Interest Posting Period<strong style="color: red">
+                  *</strong
+                ></label
+              >
+              <input
+                type="number"
+                [(ngModel)]="intPostingPeriod"
+                class="form-control"
+                [class.is-invalid]="!isValid && intPostingPeriod == 0"
+              />
+            </div>
+
+          </div>
+          <br />
+          <div class="row" style="margin: 2px">
+            <div class="col-md-12">
+              <button
+                type="button"
+                (click)="selectTabOne()"
+                class="btn btn-primary"
+              >
+                <i class="fa fa-arrow-circle-right"></i> Next
+              </button>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Options">
+          <div class="row" style="margin: 2px">
+
+
+            <div class="col-sm-3">
+              <label>Loans Factor</label>
+              <input
+                type="text"
+                [(ngModel)]="LoansFactor"
+                class="form-control"
+              />
+            </div>
+
+
+            <div class="col-sm-3">
+              <label>Grace Period</label>
+              <input
+                type="text"
+                [(ngModel)]="GracePeriod"
+                class="form-control"
+              />
+            </div>
+            <div class="col-sm-3">
+              <label>Moratorium</label>
+              <input
+                type="number"
+                [(ngModel)]="Moratorium"
+                class="form-control"
+              />
+            </div>
+            <div class="col-sm-3">
+              <label>Forced Sale Value</label>
+              <input
+                type="number"
+                name="ForcedSaleValue"
+                [(ngModel)]="ForcedSaleValue"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="row" style="margin: 2px">
+            <div class="col-sm-4" style="margin-top: 15px">
+              <input
+                type="checkbox"
+                style="width: 20px; height: 20px"
+                [(ngModel)]="ApplyPenaltyAfterMaturity"
+              />
+              &nbsp;<label>Penalty to Apply only after maturity</label>
+            </div>
+
+            <div class="col-sm-4" style="margin-top: 15px">
+              <input
+                type="checkbox"
+                style="width: 20px; height: 20px"
+                [(ngModel)]="IsSecure"
+              />
+              &nbsp;<label>Is Secured</label>
+            </div>
+
+            <div class="col-sm-4" style="margin-top: 15px">
+              <input
+                type="checkbox"
+                [(ngModel)]="ChargeInterestDuringGracePeriod"
+                style="width: 20px; height: 20px"
+              />
+              &nbsp;<label>Charge Interest During Grace Period</label>
+            </div>
+          </div>
+
+          <div class="row" style="margin: 2px">
+            <div class="col-sm-4">
+              <input
+                type="checkbox"
+                [(ngModel)]="PreConsiderInterest"
+                style="width: 20px; height: 20px"
+              />
+              &nbsp;<label>Pre Consider Interest</label>
+            </div>
+
+            <div class="col-sm-4">
+              <input
+                type="checkbox"
+                [(ngModel)]="ForgoneInterest"
+                style="width: 20px; height: 20px"
+              />
+              &nbsp;<label>Charge Forgone Interest</label>
+            </div>
+
+            <div class="col-sm-4">
+              <input
+                type="checkbox"
+                [(ngModel)]="AllowPartialDisbursements"
+                style="width: 20px; height: 20px"
+              />
+              &nbsp;<label>Allow Partial Disbursements</label>
+            </div>
+          </div>
+
+          <div class="row" style="margin: 2px">
+            <div class="col-sm-4">
+              <input
+                type="checkbox"
+                [(ngModel)]="AllowTopups"
+                style="width: 20px; height: 20px"
+              />
+              &nbsp;<label>Allow Top Ups</label>
+            </div>
+
+            <div class="col-sm-4">
+              <input
+                type="checkbox"
+                [(ngModel)]="AdjustInterestRate"
+                style="width: 20px; height: 20px"
+              />
+              &nbsp;<label>Adjustable Interest Rate</label>
+            </div>
+
+            <div class="col-sm-4">
+              <input
+                type="checkbox"
+                [(ngModel)]="ConsiderLoanSeries"
+                style="width: 20px; height: 20px"
+              />
+              &nbsp;<label>Use Loan Series</label>
+            </div>
+          </div>
+
+          <!--div class="row" style="margin: 2px">
+
+
+            <div class="col-sm-4" style="margin-top: 35px">
+              <input
+                type="checkbox"
+                style="width: 20px; height: 20px"
+                [(ngModel)]="IsMarkupBased"
+              />
+              &nbsp;<label>Is Markup Based</label>
+            </div>
+
+
+          </div-->
+
+          <div class="row" style="margin: 2px">
+            <div class="col-md-12">
+              <div class="mb-3">
+                <button
+                  type="button"
+                  (click)="selectTab(0)"
+                  class="btn btn-danger"
+                >
+                  <i class="fa fa-arrow-circle-left"></i>Back</button
+                >&nbsp;
+                <button
+                  type="button"
+                  (click)="selectTabTwo()"
+                  class="btn btn-primary ml-1"
+                >
+                  <i class="fa fa-arrow-circle-right"></i> Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Other Settings">
+          <div class="row" style="margin: 2px">
+            <div class="col-sm-3">
+              <label>Minimum Guarantors</label>
+              <input
+                type="text"
+                [(ngModel)]="MinGuarantors"
+                class="form-control"
+              />
+            </div>
+
+            <div class="col-sm-3">
+              <label>Maximum Guarantors</label>
+              <input
+                type="text"
+                [(ngModel)]="MaxGuarantors"
+                class="form-control"
+              />
+            </div>
+
+            <div class="col-sm-3">
+              <label>Minimum Shares</label>
+              <input type="text" [(ngModel)]="MinShares" class="form-control" />
+            </div>
+
+            <div class="col-sm-3">
+              <label>Minimum Membership Period</label>
+              <input
+                type="number"
+                [(ngModel)]="MinPeriod"
+                class="form-control"
+              />
+            </div>
+
+          </div>
+          <div class="row" style="margin: 2px">
+            <div class="col-sm-3">
+              <label>Share Factor:</label>
+              <input
+                type="text"
+                [(ngModel)]="SharesFactor"
+                class="form-control"
+              />
+            </div>
+            <div class="col-sm-3">
+              <label>Income Factor</label>
+              <input
+                type="text"
+                [(ngModel)]="IncomeFactor"
+                class="form-control"
+              />
+            </div>
+            <div class="col-sm-3" style="margin-top: 35px">
+              <input
+                type="checkbox"
+                [(ngModel)]="Consider23rdRule"
+                style="width: 20px; height: 20px"
+              />
+              &nbsp;<label>Consider 2/3rd’s rule</label>
+            </div>
+
+            <div class="col-sm-3" style="margin-top: 35px">
+              <input
+                type="checkbox"
+                style="width: 20px; height: 20px"
+                [(ngModel)]="UseOfZeroShares"
+              />
+              &nbsp;<label>Use Of Zero Shares</label>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="row" style="margin: 2px">
+            <div class="col-sm-3">
+              <label>Mobile Base Amount</label>
+              <input
+                type="number"
+                name="MarginBaseAmount"
+                [(ngModel)]="MarginBaseAmount"
+                class="form-control"
+              />
+            </div>
+
+            <div class="col-sm-3">
+              <label>Mobile Increment Value:</label>
+              <input
+                type="number"
+                name="IncrementValue"
+                [(ngModel)]="IncrementValue"
+                class="form-control"
+              />
+            </div>
+
+            <div class="col-sm-3" style="margin-top: 35px">
+              <input
+                type="checkbox"
+                [(ngModel)]="IsMobileLoan"
+                style="width: 20px; height: 20px"
+              />
+              &nbsp;<label>Is Mobile Loan</label>
+            </div>
+
+            <div class="col-sm-3" style="margin-top: 35px">
+              <input
+                type="checkbox"
+                [(ngModel)]="IsIncrementFactor"
+                style="width: 20px; height: 20px"
+              />
+              &nbsp;<label>Increment is a factor</label>
+            </div>
+          </div>
+
+          <br />
+          <div class="row" style="margin: 2px">
+            <div class="col-md-12">
+              <div class="mb-3">
+                <button
+                  type="button"
+                  (click)="selectTabOne()"
+                  class="btn btn-danger"
+                >
+                  <i class="fa fa-arrow-circle-left"></i>Back</button
+                >&nbsp;
+                <button
+                  type="button"
+                  (click)="selectTabThree()"
+                  class="btn btn-primary ml-1"
+                >
+                  <i class="fa fa-arrow-circle-right"></i> Next
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </mat-tab>
+        <mat-tab label="Interest and Rounding">
+          <div class="row" style="margin: 2px">
+            <div class="col-sm-3">
+              <h3>Principal Rounding</h3>
+              <label>Nearest</label>
+              <input
+                type="number"
+                [(ngModel)]="NearestPrincipleRounding"
+                class="form-control"
+              />
+            </div>
+
+            <div class="col-sm-3" style="margin-top: 70px">
+              <select
+                class="form-select"
+                style="background-color: white"
+                [(ngModel)]="PrincipalRoundingType"
+              >
+                <option value="">--select--</option>
+                <option value="Normal">Normal</option>
+                <option value="Up">Up</option>
+                <option value="Down">Down</option>
+              </select>
+            </div>
+
+            <div class="col-sm-3">
+              <h3>Interest Rounding</h3>
+              <label>Nearest</label>
+              <input
+                type="number"
+                [(ngModel)]="NearestPrincipleRounding"
+                class="form-control"
+              />
+            </div>
+
+            <div class="col-sm-3" style="margin-top: 70px">
+              <select
+                class="form-select"
+                style="background-color: white"
+                [(ngModel)]="InterestRoundingType"
+              >
+                <option value="">--select--</option>
+                <option value="Normal">Normal</option>
+                <option value="Up">Up</option>
+                <option value="Down">Down</option>
+              </select>
+            </div>
+          </div>
+
+          <hr />
+          <div class="row" style="margin: 2px">
+            <div class="col-sm-3">
+              <label>Category</label>
+              <select
+                class="form-select"
+                style="background-color: white"
+                [(ngModel)]="Category"
+              >
+                <option value="">--select--</option>
+                <option value="IndividualLoan">Individual Loan</option>
+                <option value="GroupLoan">Group Loan</option>
+              </select>
+            </div>
+
+
+
+            <div class="col-sm-3">
+              <label>Remarks</label>
+              <textarea
+                class="form-control"
+                aria-label="With textarea"
+                [(ngModel)]="Remarks"
+              ></textarea>
+            </div>
+          </div>
+
+          <br />
+          <div class="row" style="margin: 2px">
+            <div class="col-md-4">
+              <button
+                type="button"
+                (click)="selectTab(2)"
+                class="btn btn-danger"
+              >
+                <i class="fa fa-arrow-circle-left"></i>Back</button
+              >&nbsp;
+
+              <div
+                class="btn-group mr-2"
+                *ngIf="!loading"
+                role="group"
+                aria-label="First group"
+              >
+                <button
+                  type="button"
+                  [disabled]="loading"
+                  (click)="
+                    onSubmit(
+                      RefCode,
+                      Description,
+                      MaxPeriod,
+                      InterestRate,
+                      InterestRateFrequency,
+                      MinAmount,
+                      MaxAmount,
+                      IncomeFactor,
+                      ChargeInterestDuringGracePeriod,
+                      SharesFactor,
+                      MinGuarantors,
+                      MaxGuarantors,
+                      InterestPayMethod,
+                      DefaultPenalty,
+                      DefaultPenaltyFrequency,
+                      Moratorium,
+                      MinShares,
+                      InterestCalFormula,
+                      MinPeriod,
+                      LoansFactor,
+                      RepaymentFrequency,
+                      GracePeriod,
+                      ApplyPenaltyAfterMaturity,
+                      IsSecure,
+                      Consider23rdRule,
+                      PreConsiderInterest,
+                      ForgoneInterest,
+                      AllowPartialDisbursements,
+                      AllowTopups,
+                      AdjustInterestRate,
+                      ConsiderLoanSeries,
+                      IsMarkupBased,
+                      ForcedSaleValue,
+                      UseOfZeroShares,
+                      MarginBaseAmount,
+                      IncrementValue,
+                      IsMobileLoan,
+                      IsIncrementFactor,
+                      NearestPrincipleRounding,
+                      PrincipalRoundingType,
+                      NearestInterestRounding,
+                      InterestRoundingType,
+                      Category,
+                      Remarks,
+                      intPostingFrequency,
+                      intPostingPeriod
+                    )
+                  "
+                  class="btn btn-primary"
+                  
+                >
+                  Submit &nbsp; <i class="fa fa-database"></i>
+                </button>
+              </div>
+              <div id="sa-success" *ngIf="loading" (click)="successmsg()"></div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>
